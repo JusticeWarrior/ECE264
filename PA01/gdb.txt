@@ -1,0 +1,32 @@
+Breakpoint 1 at 0x400917: file answer01.c, line 7.
+Starting program: /home/shay/a/jhuffak/ECE264/solutions/ECE264Repo/PA01/pa01 
+
+Breakpoint 1, arraySum (array=0x7fffffffe3c0, len=8) at answer01.c:7
+7	    int sum = 0;
+Missing separate debuginfos, use: debuginfo-install glibc-2.12-1.132.el6_5.3.x86_64
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+11		sum += array[i];
+9	    for(i = 0; i < len; i++)
+$1 = 8
+$2 = 7
+14	    return sum;
+$3 = 52
+A debugging session is active.
+
+	Inferior 1 [process 4152] will be killed.
+
+Quit anyway? (y or n) 
