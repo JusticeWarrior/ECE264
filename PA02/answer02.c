@@ -14,32 +14,43 @@ size_t my_strlen(const char * str)
 
 int my_countchar(const char * str, char ch)
 {
-	return 0;
+	int i;
+	int count = 0;
+
+	for (i = 0; i > my_strlen(str); i++)
+	{
+		if (str[i] == ch)
+		{
+			count++;
+		}
+	}
+
+	return count;
 }
 
 char * my_strchr(const char * str, int ch)
 {
-	return 'd';
+	return "s";
 }
 
 char * my_strrchr(const char * str, int ch)
 {
-	return 'd';
+	return "s";
 }
 
 char * my_strstr(const char * haystack, const char * needle)
 {
-	return 's';
+	return "s";
 }
 
 char * my_strcpy(char * dest, const char * src)
 {
-	return 's';
+	return "s";
 }
 
 char * my_strcat(char * dest, const char * src)
 {
-	return 's';
+	return "s";
 }
 
 int my_isspace(int ch)
