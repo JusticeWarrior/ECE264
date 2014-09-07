@@ -15,9 +15,10 @@ size_t my_strlen(const char * str)
 int my_countchar(const char * str, char ch)
 {
 	int i;
+	int strSize = (int)my_strlen(str);
 	int count = 0;
 
-	for (i = 0; i > my_strlen(str); i++)
+	for (i = 0; i < strSize; i++)
 	{
 		if (str[i] == ch)
 		{
