@@ -31,7 +31,18 @@ int my_countchar(const char * str, char ch)
 
 char * my_strchr(const char * str, int ch)
 {
-	return "s";
+	int i;
+	int strSize = (int)my_strlen(str);
+
+	for (i = 0; i < strSize + 1; i++)
+	{
+		if (str[i] == ch)
+		{
+			return (char *)(&str[i]);
+		}
+	}
+
+	return NULL;
 }
 
 char * my_strrchr(const char * str, int ch)
