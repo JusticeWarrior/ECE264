@@ -137,5 +137,13 @@ int my_isspace(int ch)
 
 int my_atoi(const char * str)
 {
+	int i;
+	int strSize = (int)my_strlen(str);
+
+	for (i = 0; i < strSize; i++)
+	{
+
+	}
+
 	return 0;
 }
