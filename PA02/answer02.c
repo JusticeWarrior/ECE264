@@ -154,6 +154,8 @@ int my_atoi(const char * str)
 	{
 		if ('0' <= str[i] <= '9')
 		{
+			ret *= 10;
+			ret += (str[i] - '0');
 			i++;
 			continue;
 		}
