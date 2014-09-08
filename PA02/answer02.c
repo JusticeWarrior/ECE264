@@ -148,11 +148,14 @@ int my_atoi(const char * str)
 	}
 
 	if (str[i] == '-')
+	{
 		negative = -1;
+		i++;
+	}
 
 	while (i < strSize)
 	{
-		if ('0' <= str[i] <= '9')
+		if ((int)'0' <= (int)str[i] && (int)str[i] <= (int)'9')
 		{
 			ret *= 10;
 			ret += (str[i] - '0');
