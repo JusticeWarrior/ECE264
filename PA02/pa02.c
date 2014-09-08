@@ -60,7 +60,7 @@ int main(int argc, char * * argv)
     printf("my_strstr(\"%s\", \"World\") = %s\n", s1, my_strstr(s1, "World"));
     printf("my_strstr(\"%s\", \"\") = %s\n", s1, my_strstr(s1, ""));
     printf("my_strstr(\"%s\", \"hello\") = %s\n", s1, my_strstr(s1, "hello"));
-	printf("s = %s; my_strstr(s, \"!\") == %s.\n", "Hello World!", my_strstr("Hello World!", "!"));
+	printf("s = %s; my_strstr(s, \"!\") == %s\n", "Hello World!", my_strstr("Hello World!", "!"));
 
     // -- my_strcpy. For this function you need a buffer where you
     // copy the string to. 

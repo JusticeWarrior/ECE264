@@ -71,7 +71,7 @@ char * my_strstr(const char * haystack, const char * needle)
 	int i;
 	int j;
 
-	for (i = 0; i + needleSize < haystackSize; i++)
+	for (i = 0; i + needleSize <= haystackSize; i++)
 	{
 		for (j = i; j < i + needleSize; j++)
 		{
