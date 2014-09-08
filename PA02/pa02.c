@@ -109,7 +109,15 @@ int main(int argc, char * * argv)
 		}
 	}
 
-    // -- my_atoi. You will have to do this for yourself.
+    // -- my_atoi
+	printf("my_atoi(\"%s\") = \"%s\"\n", "0", my_atoi("0"));
+	printf("my_atoi(\"%s\") = \"%s\"\n", "-12", my_atoi("-12"));
+	printf("my_atoi(\"%s\") = \"%s\"\n", "15th of March would be the ides.", my_atoi("15th of March would be the ides."));
+	printf("my_atoi(\"%s\") = \"%s\"\n", "4 months to Summer.", my_atoi("4 months to Summer."));
+	printf("my_atoi(\"%s\") = \"%s\"\n", "\n\f\t\v\r 6 white space characters handled correctly.",
+		my_atoi("\n\f\t\v\r 6 white space characters handled correctly."));
+	printf("my_atoi(\"%s\") = \"%s\"\n", "garbage, instead of a number like 73 for example, should yield a zero",
+		my_atoi("garbage, instead of a number like 73 for example, should yield a zero"));
 
     return EXIT_SUCCESS;
 }
