@@ -63,7 +63,7 @@ char * my_strrchr(const char * str, int ch)
 
 char * my_strstr(const char * haystack, const char * needle)
 {
-	if (needle == "")
+	if (needle[0] == '\0')
 		return (char *)haystack;
 
 	int haystackSize = (int)my_strlen(haystack);
