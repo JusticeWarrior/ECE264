@@ -60,15 +60,15 @@ int main(int argc, char * * argv)
     printf("my_strstr(\"%s\", \"\") = %s\n", s1, my_strstr(s1, ""));
     printf("my_strstr(\"%s\", \"hello\") = %s\n", s1, my_strstr(s1, "hello"));
 
-    //// -- my_strcpy. For this function you need a buffer where you
-    //// copy the string to. 
-    //char buffer[BUFFER_LEN];
-    //my_strcpy(buffer, s1);
-    //printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s1, buffer);
-    //my_strcpy(buffer, s2);
-    //printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s2, buffer);
-    //my_strcpy(buffer, s3);
-    //printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s3, buffer);
+    // -- my_strcpy. For this function you need a buffer where you
+    // copy the string to. 
+    char buffer[BUFFER_LEN];
+    my_strcpy(buffer, s1);
+    printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s1, buffer);
+    my_strcpy(buffer, s2);
+    printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s2, buffer);
+    my_strcpy(buffer, s3);
+    printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s3, buffer);
 
     //// -- my_strcat. You will have to do this yourself... just
     //// look at my_strcpy for an example, and go from there.
