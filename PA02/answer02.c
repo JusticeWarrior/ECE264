@@ -72,6 +72,16 @@ char * my_strstr(const char * haystack, const char * needle)
 	if (haystackSize < needleSize)
 		return NULL;
 
+	int i;
+	char * tempStr;
+	for (i = 0; i + needleSize <= haystackSize; i++)
+	{
+		tempStr = (char *)&haystack[i];
+		tempStr[i + needleSize] = '\0';
+
+
+	}
+
 	return "s";
 }
 
