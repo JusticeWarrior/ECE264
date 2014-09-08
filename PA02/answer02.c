@@ -137,13 +137,23 @@ int my_isspace(int ch)
 
 int my_atoi(const char * str)
 {
-	int i;
+	int i = 0;
 	int strSize = (int)my_strlen(str);
+	int ret = 0;
+	int negative = 1;
+
+	while (my_isspace(str[i]) == 1)
+	{
+		i++;
+	}
+
+	if (str[i] == '-')
+		negative = -1;
 
 	for (i = 0; i < strSize; i++)
 	{
-
+		
 	}
 
-	return 0;
+	return ret * negative;
 }
