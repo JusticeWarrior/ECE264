@@ -89,7 +89,15 @@ char * my_strstr(const char * haystack, const char * needle)
 
 char * my_strcpy(char * dest, const char * src)
 {
-	return "s";
+	int i;
+	int srcSize = (int)my_strlen(src);
+
+	for (i = 0; i <= srcSize; i++)
+	{
+		dest[i] = src[i];
+	}
+
+	return dest;
 }
 
 char * my_strcat(char * dest, const char * src)

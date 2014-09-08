@@ -25,6 +25,13 @@ int main(int argc, char * * argv)
     const char * s3 = "foo";
 	const char * s4 = "........................................";
 
+	char * s = "Hello World!";
+
+	printf("Printing Eric's string: %s\n", s);
+	printf("Printing Eric's string: %p\n", s);
+	printf("Printing Eric's string: %p\n", s + 1200);
+	printf("Printing Eric's string: %p\n", s + 1200);
+
     // -- my_strlen, should be: 12, 0, and 3
     printf("my_strlen(\"%s\") = %d\n", s1, (int) my_strlen(s1));
     printf("my_strlen(\"%s\") = %d\n", s2, (int) my_strlen(s2));
