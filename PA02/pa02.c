@@ -24,6 +24,7 @@ int main(int argc, char * * argv)
     const char * s2 = "";
     const char * s3 = "foo";
 	const char * s4 = "........................................";
+	const char * s5 = "Zippy!";
 
 	char * s = "Hello World!";
 
@@ -70,12 +71,45 @@ int main(int argc, char * * argv)
     my_strcpy(buffer, s3);
     printf("my_strcpy(buffer, \"%s\"), buffer = \"%s\"\n", s3, buffer);
 
-    //// -- my_strcat. You will have to do this yourself... just
-    //// look at my_strcpy for an example, and go from there.
+    // -- my_strcat
+	my_strcpy(buffer, "Hello ");
+	printf("my_strcat(buffer, \"%s\"), buffer = \"%s\"\n", s5, my_strcat(buffer, s5)); // prints "Hello Zippy!"
 
-    //// -- my_isspace. You will have to do this for yourself.
+    // -- my_isspace
+	if (my_isspace(' ') == 0)
+	{
+		printf("my_isspace(%c) = 0 --- FAIL \n", ' ');
+	}
+	if (my_isspace('\f') == 0)
+	{
+		printf("my_isspace(\\f) = 0 --- FAIL \n");
+	}
+	if (my_isspace('\n') == 0)
+	{
+		printf("my_isspace(\\n) = 0 --- FAIL \n");
+	}
+	if (my_isspace('\r') == 0)
+	{
+		printf("my_isspace(\\r) = 0 --- FAIL \n");
+	}
+	if (my_isspace('\t') == 0)
+	{
+		printf("my_isspace(\\t) = 0 --- FAIL \n");
+	}
+	if (my_isspace('\v') == 0)
+	{
+		printf("my_isspace(\\v) = 0 --- FAIL \n");
+	}
+	char ch;
+	for (ch = 'A'; ch <= 'Z'; ch++)
+	{
+		if (my_isspace(ch) != 0) // always 0
+		{
+			printf("my_isspace(%c) = 1 --- FAIL \n", ch);
+		}
+	}
 
-    //// -- my_atoi. You will have to do this for yourself.
+    // -- my_atoi. You will have to do this for yourself.
 
     return EXIT_SUCCESS;
 }

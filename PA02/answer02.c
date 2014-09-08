@@ -104,10 +104,11 @@ char * my_strcat(char * dest, const char * src)
 {
 	int i;
 	int srcSize = (int)my_strlen(src);
+	int destSize = (int)my_strlen(dest);
 
 	for (i = 0; i <= srcSize; i++)
 	{
-		dest[i] = src[i];
+		dest[i + destSize] = src[i];
 	}
 
 	return dest;
@@ -115,6 +116,19 @@ char * my_strcat(char * dest, const char * src)
 
 int my_isspace(int ch)
 {
+	const char SPACE = ' ';
+	const char FORMFEED = '\f';
+	const char NEWLINE = '\n';
+	const char RETURN = '\r';
+	const char HORZTAB = '\t';
+	const char VERTTAB = '\v';
+
+	switch (ch)
+	{
+		case SPACE:
+			break;
+	}
+
 	return 0;
 }
 
