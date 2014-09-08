@@ -116,20 +116,23 @@ char * my_strcat(char * dest, const char * src)
 
 int my_isspace(int ch)
 {
-	const char SPACE = ' ';
-	const char FORMFEED = '\f';
-	const char NEWLINE = '\n';
-	const char RETURN = '\r';
-	const char HORZTAB = '\t';
-	const char VERTTAB = '\v';
-
 	switch (ch)
 	{
-		case SPACE:
-			break;
+		case ' ':
+			return 1;
+		case '\f':
+			return 1;
+		case '\n':
+			return 1;
+		case '\r':
+			return 1;
+		case '\t':
+			return 1;
+		case '\v':
+			return 1;
+		default:
+			return 0;
 	}
-
-	return 0;
 }
 
 int my_atoi(const char * str)
