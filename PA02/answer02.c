@@ -34,7 +34,7 @@ char * my_strchr(const char * str, int ch)
 	int i;
 	int strSize = (int)my_strlen(str);
 
-	for (i = 0; i < strSize + 1; i++)
+	for (i = 0; i <= strSize; i++)
 	{
 		if (str[i] == ch)
 		{
@@ -47,7 +47,18 @@ char * my_strchr(const char * str, int ch)
 
 char * my_strrchr(const char * str, int ch)
 {
-	return "s";
+	int i;
+	int strSize = (int)my_strlen(str);
+
+	for (i = strSize; i >= 0; i--)
+	{
+		if (str[i] == ch)
+		{
+			return (char *)(&str[i]);
+		}
+	}
+
+	return NULL;
 }
 
 char * my_strstr(const char * haystack, const char * needle)

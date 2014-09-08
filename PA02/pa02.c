@@ -42,6 +42,12 @@ int main(int argc, char * * argv)
     printf("my_strchr(\"%s\", '\\0') = %s\n", s3, my_strchr(s3, '\0'));
 	printf("my_strchr(\"%s\", '.') = %s\n", s4, my_strchr(s4, '.'));
 
+	// -- my_strrchr, should be: "ld!", "(null)", "", and "."
+	printf("my_strrchr(\"%s\", 'l') = %s\n", s1, my_strrchr(s1, 'l'));
+	printf("my_strrchr(\"%s\", 'o') = %s\n", s2, my_strrchr(s2, 'o'));
+	printf("my_strrchr(\"%s\", '\\0') = %s\n", s3, my_strrchr(s3, '\0'));
+	printf("my_strrchr(\"%s\", '.') = %s\n", s4, my_strrchr(s4, '.'));
+
     //// -- my_strstr, should be: "World!", "Hello World!", "(null)"
     //printf("my_strstr(\"%s\", \"World\") = %s\n", s1, my_strstr(s1, "World"));
     //printf("my_strstr(\"%s\", \"\") = %s\n", s1, my_strstr(s1, ""));
