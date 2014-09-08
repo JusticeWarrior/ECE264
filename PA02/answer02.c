@@ -63,6 +63,15 @@ char * my_strrchr(const char * str, int ch)
 
 char * my_strstr(const char * haystack, const char * needle)
 {
+	if (needle == "")
+		return haystack;
+
+	int haystackSize = (int)my_strlen(haystack);
+	int needleSize = (int)my_strlen(needle);
+
+	if (haystackSize < needleSize)
+		return NULL;
+
 	return "s";
 }
 
