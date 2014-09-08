@@ -64,25 +64,23 @@ char * my_strrchr(const char * str, int ch)
 char * my_strstr(const char * haystack, const char * needle)
 {
 	if (needle == "")
-		return haystack;
+		return (char *)haystack;
 
 	int haystackSize = (int)my_strlen(haystack);
 	int needleSize = (int)my_strlen(needle);
-
-	if (haystackSize < needleSize)
-		return NULL;
-
 	int i;
 	char * tempStr;
+
 	for (i = 0; i + needleSize <= haystackSize; i++)
 	{
 		tempStr = (char *)&haystack[i];
 		tempStr[i + needleSize] = '\0';
 
-
+		if (tempStr == needle)
+			return (char *)&haystack[i];
 	}
 
-	return "s";
+	return NULL;
 }
 
 char * my_strcpy(char * dest, const char * src)
