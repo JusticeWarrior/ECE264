@@ -142,7 +142,7 @@ int my_atoi(const char * str)
 	int ret = 0;
 	int negative = 1;
 
-	while (my_isspace(str[i]) == 1)
+	while (my_isspace(str[i]) == 1 && i < strSize)
 	{
 		i++;
 	}
@@ -150,9 +150,14 @@ int my_atoi(const char * str)
 	if (str[i] == '-')
 		negative = -1;
 
-	for (i = 0; i < strSize; i++)
+	while (i < strSize)
 	{
-		
+		if ('0' <= str[i] <= '9')
+		{
+			i++;
+			continue;
+		}
+		break;
 	}
 
 	return ret * negative;
