@@ -71,15 +71,15 @@ char * my_strstr(const char * haystack, const char * needle)
 	int i;
 	int j;
 
-	for (i = 0; i + needleSize <= haystackSize; i++)
+	for (i = 0; i + needleSize < haystackSize; i++)
 	{
-		for (j = i; j <= i + needleSize; j++)
+		for (j = i; j < i + needleSize; j++)
 		{
 			if (haystack[j] != needle[j - i])
 				goto spin;
 		}
 		
-		return (char *)haystack[i];
+		return (char *)&haystack[i];
 		
 		spin:;
 	}
