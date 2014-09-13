@@ -26,12 +26,13 @@ int main(int argc, char * * argv)
 	const char * s4 = "........................................";
 	const char * s5 = "Zippy!";
 
-	char * s = "Hello World!";
+	const char * s = "Hello World!";
+	char * fun = s;
 
 	printf("Printing Eric's string: %s\n", s);
 	printf("Printing Eric's string: %p\n", s);
-	printf("Printing Eric's string: %p\n", s + 1200);
-	printf("Printing Eric's string: %p\n", s + 1200);
+	printf("Printing Eric's fun string: %s\n", fun);
+	printf("Printing Eric's fun string: %p\n", fun);
 
     // -- my_strlen, should be: 12, 0, and 3
     printf("my_strlen(\"%s\") = %d\n", s1, (int) my_strlen(s1));
