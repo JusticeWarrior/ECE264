@@ -64,7 +64,7 @@ namespace HW3Test
 		{
 
 
-			strcat_ex()
+			//strcat_ex()
 		};
 	};
 }
