@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 extern "C"
 {
 #include "../../answer03.h"
