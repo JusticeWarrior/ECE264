@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HW3", "HW3\HW3.vcxproj", "{DD7D4597-8AFC-4682-901D-7B94F469BEBE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HW3.Test", "HW3.Test\HW3.Test.vcxproj", "{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,16 +25,6 @@ Global
 		{DD7D4597-8AFC-4682-901D-7B94F469BEBE}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{DD7D4597-8AFC-4682-901D-7B94F469BEBE}.Release|Win32.ActiveCfg = Release|Win32
 		{DD7D4597-8AFC-4682-901D-7B94F469BEBE}.Release|Win32.Build.0 = Release|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Debug|Win32.Build.0 = Debug|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Release|Any CPU.ActiveCfg = Release|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Release|Win32.ActiveCfg = Release|Win32
-		{C292BE54-AD28-4FAC-BA43-05918C7F1FF8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

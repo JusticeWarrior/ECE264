@@ -18,12 +18,15 @@
     <ClCompile Include="..\..\answer03.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\main.c">
+    <ClCompile Include="..\..\PA03.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\answer03.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\minunit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
