@@ -18,6 +18,19 @@ namespace PA04
 		}
 
 		[TestMethod]
+		public void TestCatLite()
+		{
+			//Process pProcess = new Process();
+			//pProcess.StartInfo.FileName = EchoLite;
+			//pProcess.StartInfo.Arguments = "Balls";
+			//pProcess.StartInfo.UseShellExecute = false;
+			//pProcess.StartInfo.RedirectStandardOutput = true;
+			//pProcess.Start();
+			//Assert.AreEqual("Balls ", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			//pProcess.WaitForExit();
+		}
+
+		[TestMethod]
 		public void TestEchoLite()
 		{
 			Process pProcess = new Process();
