@@ -25,5 +25,35 @@ int main(int argc, char * * argv)
 		}
 	}
 
+	if (argv[argc - 1][0] == '-')
+	{
+		fprintf(stderr, "Match cannot begin with '-'\n");
+		return EXIT_FAILURE;
+	}
+
+	int invert = 0;
+	int line = 0;
+	int quiet = 0;
+
+	for (i = 1; i < argc - 1; i++)
+	{
+		if (!strcmp(argv[i], "-v"))
+			invert = 1;
+		else if (!strcmp(argv[i], "-n"))
+			line = 1;
+		else if (!strcmp(argv[i], "-q"))
+			quiet = 1;
+		else
+		{
+			fprintf(stderr, "Unrecognized argument, Aborting...\n");
+			return EXIT_FAILURE;
+		}
+	}
+
+	while (!feof(stdin))
+	{
+
+	}
+
 	return EXIT_SUCCESS;
 }
