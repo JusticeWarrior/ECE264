@@ -8,20 +8,46 @@ namespace PA04
 	[TestClass]
 	public class PA04Test
 	{
+		private const string EchoLite = "echo-lite.exe";
 		private const string CatLite = "cat-lite.exe";
-		
-		[TestMethod]
-		public void TestCatLite()
+
+		[TestInitialize]
+		public void SetUp()
 		{
 			Directory.SetCurrentDirectory(@"C:\Users\jordh_000\Documents\Purdue\ECE264\Solutions\PA04\PA04\Debug");
+		}
+
+		[TestMethod]
+		public void TestEchoLite()
+		{
 			Process pProcess = new Process();
-			pProcess.StartInfo.FileName = CatLite;
+			pProcess.StartInfo.FileName = EchoLite;
 			pProcess.StartInfo.Arguments = "Balls";
 			pProcess.StartInfo.UseShellExecute = false;
 			pProcess.StartInfo.RedirectStandardOutput = true;
 			pProcess.Start();
+			Assert.AreEqual("Balls ", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			pProcess.WaitForExit();
 
-			Assert.AreEqual("Balls", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			pProcess = new Process();
+			pProcess.StartInfo.FileName = EchoLite;
+			pProcess.StartInfo.Arguments = "note that    multiple space becomes 1.";
+			pProcess.StartInfo.UseShellExecute = false;
+			pProcess.StartInfo.RedirectStandardOutput = true;
+			pProcess.Start();
+			Assert.AreEqual("note that multiple space becomes 1. ",
+				pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			pProcess.WaitForExit();
+
+			pProcess = new Process();
+			pProcess.StartInfo.FileName = EchoLite;
+			pProcess.StartInfo.Arguments = "but you can"
+			+ " use \" quotes \" to pass along spaces.";
+			pProcess.StartInfo.UseShellExecute = false;
+			pProcess.StartInfo.RedirectStandardOutput = true;
+			pProcess.Start();
+			Assert.AreEqual("but you can use  quotes  to pass along spaces. ",
+				pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
 			pProcess.WaitForExit();
 		}
 	}
