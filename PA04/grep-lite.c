@@ -52,8 +52,19 @@ int main(int argc, char * * argv)
 
 	while (!feof(stdin))
 	{
+		char * line = "";
+		line = fgets(line, 2000, stdin);
 
+		if (strstr(line, argv[argc - 1]))
+		{
+
+		}
+		else
+		{
+			
+		}
 	}
 
 	return EXIT_SUCCESS;
 }
+
