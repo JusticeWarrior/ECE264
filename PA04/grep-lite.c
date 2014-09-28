@@ -25,6 +25,12 @@ int main(int argc, char * * argv)
 		}
 	}
 
+	if (argc == 1)
+	{
+		fprintf(stderr, "You must have a pattern.\n");
+		return EXIT_FAILURE;
+	}
+
 	if (argv[argc - 1][0] == '-')
 	{
 		fprintf(stderr, "Match cannot begin with '-'\n");
@@ -45,7 +51,7 @@ int main(int argc, char * * argv)
 			quiet = 1;
 		else
 		{
-			fprintf(stderr, "Unrecognized argument, Aborting...\n");
+			fprintf(stderr, "Unrecognized argument %s, Aborting...\n", argv[i]);
 			return EXIT_FAILURE;
 		}
 	}
@@ -54,8 +60,8 @@ int main(int argc, char * * argv)
 
 	while (!feof(stdin))
 	{
-		char * lineText = "";
-		lineText = fgets(lineText, 2000, stdin);
+		char lineText[2000];
+		fgets(lineText, 2000, stdin);
 
 		if (quiet)
 			continue;
