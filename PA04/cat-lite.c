@@ -7,7 +7,7 @@ int main(int argc, char * * argv)
 	int i;
 	for (i = 1; i < argc; i++)
 	{
-		if (strcmp(argv[i], "--help"))
+		if (!strcmp(argv[i], "--help"))
 		{
 			fprintf(stdout, "<help-message>\n");
 			fprintf(stdout, "Usage: cat-lite [--help] [FILE]...\n");
@@ -18,6 +18,7 @@ int main(int argc, char * * argv)
 			fprintf(stdout, "                    then g's contents.\n");
 			fprintf(stdout, "  cat-lite          Copy standard input to standard output.\n");
 			fprintf(stdout, "</help-message>\n");
+			return EXIT_SUCCESS;
 		}
 	}
 
