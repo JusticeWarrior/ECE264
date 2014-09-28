@@ -6,7 +6,7 @@ int main(int argc, char * argv[])
 	int ind;
 
 	for (ind = 1; ind < argc; ++ind) {
-		printf("%s ", argv[ind]);
+		fprintf(stdout, "%s ", argv[ind]);
 	}
 
 	return EXIT_SUCCESS;
