@@ -50,19 +50,47 @@ int main(int argc, char * * argv)
 		}
 	}
 
+	int lineNumber = 1;
+
 	while (!feof(stdin))
 	{
-		char * line = "";
-		line = fgets(line, 2000, stdin);
+		char * lineText = "";
+		lineText = fgets(lineText, 2000, stdin);
 
-		if (strstr(line, argv[argc - 1]))
+		if (quiet)
+			continue;
+		
+		if (strstr(lineText, argv[argc - 1]))
 		{
-
+			if (!invert)
+			{
+				if (line)
+				{
+					fprintf(stdout, "%d: ", lineNumber);
+					fprintf(stdout, "%s\n", lineText);
+				}
+				else
+				{
+					fprintf(stdout, "%s\n", lineText);
+				}
+			}
 		}
 		else
 		{
-			
+			if (invert)
+			{
+				if (line)
+				{
+					fprintf(stdout, "%d: ", lineNumber);
+					fprintf(stdout, "%s\n", lineText);
+				}
+				else
+				{
+					fprintf(stdout, "%s\n", lineText);
+				}
+			}
 		}
+		lineNumber++;
 	}
 
 	return EXIT_SUCCESS;
