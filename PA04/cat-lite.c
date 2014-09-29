@@ -6,9 +6,11 @@ int main(int argc, char * * argv)
 {
 	if (argc == 1)
 	{
+		char output = fgetc(stdin);
 		while (!feof(stdin))
 		{
-			fputc(fgetc(stdin), stdout);
+			fputc(output, stdout);
+			output = fgetc(stdin);
 		}
 		return EXIT_SUCCESS;
 	}
@@ -33,9 +35,11 @@ int main(int argc, char * * argv)
 	{
 		if (!strcmp(argv[i], "-"))
 		{
+			char output = fgetc(stdin);
 			while (!feof(stdin))
 			{
-				fputc(fgetc(stdin), stdout);
+				fputc(output, stdout);
+				output = fgetc(stdin);
 			}
 			continue;
 		}
@@ -47,9 +51,11 @@ int main(int argc, char * * argv)
 			return EXIT_FAILURE;
 		}
 		
+		char output = fgetc(fp);
 		while (!feof(fp))
 		{
-			fputc(fgetc(fp), stdout);
+			fputc(output, stdout);
+			output = fgetc(fp);
 		}
 		fclose(fp);
 	}

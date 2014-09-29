@@ -7,8 +7,17 @@ int main(int argc, char * argv[])
 
 	for (ind = 1; ind < argc; ++ind) 
 	{
-		fprintf(stdout, "%s ", argv[ind]);
+		if (ind == argc - 1 && argv[argc - 1][0] == '\n')
+		{
+			fprintf(stdout, "\n");
+			return EXIT_SUCCESS;
+		}
+		else
+		{
+			fprintf(stdout, "%s ", argv[ind]);
+		}
 	}
+	
 
 	return EXIT_SUCCESS;
 }

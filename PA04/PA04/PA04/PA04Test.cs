@@ -33,13 +33,22 @@ namespace PA04
 		[TestMethod]
 		public void TestEchoLite()
 		{
+			//Process pProcess = new Process();
+			//pProcess.StartInfo.FileName = EchoLite;
+			//pProcess.StartInfo.Arguments = "Say cheese";
+			//pProcess.StartInfo.UseShellExecute = false;
+			//pProcess.StartInfo.RedirectStandardOutput = true;
+			//pProcess.Start();
+			//Assert.AreEqual("Say cheese ", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			//pProcess.WaitForExit();
+
 			Process pProcess = new Process();
 			pProcess.StartInfo.FileName = EchoLite;
-			pProcess.StartInfo.Arguments = "Balls";
+			pProcess.StartInfo.Arguments = "\n";
 			pProcess.StartInfo.UseShellExecute = false;
 			pProcess.StartInfo.RedirectStandardOutput = true;
 			pProcess.Start();
-			Assert.AreEqual("Balls ", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
+			Assert.AreEqual("\n", pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
 			pProcess.WaitForExit();
 
 			pProcess = new Process();
@@ -48,7 +57,7 @@ namespace PA04
 			pProcess.StartInfo.UseShellExecute = false;
 			pProcess.StartInfo.RedirectStandardOutput = true;
 			pProcess.Start();
-			Assert.AreEqual("note that multiple space becomes 1. ",
+			Assert.AreEqual("note that multiple space becomes 1.",
 				pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
 			pProcess.WaitForExit();
 
@@ -59,7 +68,7 @@ namespace PA04
 			pProcess.StartInfo.UseShellExecute = false;
 			pProcess.StartInfo.RedirectStandardOutput = true;
 			pProcess.Start();
-			Assert.AreEqual("but you can use  quotes  to pass along spaces. ",
+			Assert.AreEqual("but you can use  quotes  to pass along spaces.",
 				pProcess.StandardOutput.ReadToEnd(), "Ya done goofed son.");
 			pProcess.WaitForExit();
 		}
