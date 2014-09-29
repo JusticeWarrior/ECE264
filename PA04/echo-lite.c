@@ -5,7 +5,8 @@ int main(int argc, char * argv[])
 {
 	int ind;
 
-	for (ind = 1; ind < argc; ++ind) {
+	for (ind = 1; ind < argc; ++ind) 
+	{
 		fprintf(stdout, "%s ", argv[ind]);
 	}
 

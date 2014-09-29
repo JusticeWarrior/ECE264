@@ -9,7 +9,6 @@ int main(int argc, char * * argv)
 	{
 		if (!strcmp(argv[i], "--help"))
 		{
-			fprintf(stdout, "<help-message>\n");
 			fprintf(stdout, "Usage: grep-lite [OPTION]... PATTERN\n");
 			fprintf(stdout, "Search for PATTERN in standard input. PATTERN is a\n");
 			fprintf(stdout, "string. grep-lite will search standard input line by\n");
@@ -20,7 +19,6 @@ int main(int argc, char * * argv)
 			fprintf(stdout, "  -q, --quiet            suppress all output\n\n");
 			fprintf(stdout, "Exit status is 0 if any line is selected, 1 otherwise;\n");
 			fprintf(stdout, "if any error occurs, then the exit status is 2.\n");
-			fprintf(stdout, "</help-message>\n");
 			return EXIT_SUCCESS;
 		}
 	}
@@ -28,13 +26,13 @@ int main(int argc, char * * argv)
 	if (argc == 1)
 	{
 		fprintf(stderr, "You must have a pattern.\n");
-		return EXIT_FAILURE;
+		return 2;
 	}
 
 	if (argv[argc - 1][0] == '-')
 	{
 		fprintf(stderr, "Match cannot begin with '-'\n");
-		return EXIT_FAILURE;
+		return 2;
 	}
 
 	int invert = 0;
@@ -43,26 +41,26 @@ int main(int argc, char * * argv)
 
 	for (i = 1; i < argc - 1; i++)
 	{
-		if (!strcmp(argv[i], "-v"))
+		if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--invert-match"))
 			invert = 1;
-		else if (!strcmp(argv[i], "-n"))
+		else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--line-number"))
 			line = 1;
-		else if (!strcmp(argv[i], "-q"))
+		else if (!strcmp(argv[i], "-q") || !strcmp(argv[i], "--quiet"))
 			quiet = 1;
 		else
 		{
 			fprintf(stderr, "Unrecognized argument %s, Aborting...\n", argv[i]);
-			return EXIT_FAILURE;
+			return 2;
 		}
 	}
 
 	int lineNumber = 1;
+	int exitStatus = 1;
+	char lineText[2000];
+	fgets(lineText, 2000, stdin);
 
 	while (!feof(stdin))
 	{
-		char lineText[2000];
-		fgets(lineText, 2000, stdin);
-
 		if (quiet)
 			continue;
 		
@@ -70,14 +68,15 @@ int main(int argc, char * * argv)
 		{
 			if (!invert)
 			{
+				int exitStatus = 0;
 				if (line)
 				{
 					fprintf(stdout, "%d: ", lineNumber);
-					fprintf(stdout, "%s\n", lineText);
+					fprintf(stdout, "%s", lineText);
 				}
 				else
 				{
-					fprintf(stdout, "%s\n", lineText);
+					fprintf(stdout, "%s", lineText);
 				}
 			}
 		}
@@ -85,20 +84,22 @@ int main(int argc, char * * argv)
 		{
 			if (invert)
 			{
+				int exitStatus = 0;
 				if (line)
 				{
 					fprintf(stdout, "%d: ", lineNumber);
-					fprintf(stdout, "%s\n", lineText);
+					fprintf(stdout, "%s", lineText);
 				}
 				else
 				{
-					fprintf(stdout, "%s\n", lineText);
+					fprintf(stdout, "%s", lineText);
 				}
 			}
 		}
+		fgets(lineText, 2000, stdin);
 		lineNumber++;
 	}
 
-	return EXIT_SUCCESS;
+	return exitStatus;
 }
 
