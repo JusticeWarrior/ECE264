@@ -57,18 +57,18 @@ int main(int argc, char * * argv)
 	int lineNumber = 1;
 	int exitStatus = 1;
 	char lineText[2000];
+	
 	fgets(lineText, 2000, stdin);
 
 	while (!feof(stdin))
 	{
-		if (quiet)
-			continue;
-		
 		if (strstr(lineText, argv[argc - 1]))
 		{
 			if (!invert)
 			{
-				int exitStatus = 0;
+				exitStatus = 0;
+				if (quiet)
+					break;
 				if (line)
 				{
 					fprintf(stdout, "%d: ", lineNumber);
@@ -84,7 +84,9 @@ int main(int argc, char * * argv)
 		{
 			if (invert)
 			{
-				int exitStatus = 0;
+				exitStatus = 0;
+				if (quiet)
+					break;
 				if (line)
 				{
 					fprintf(stdout, "%d: ", lineNumber);

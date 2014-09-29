@@ -5,17 +5,14 @@ int main(int argc, char * argv[])
 {
 	int ind;
 
+	if (argc == 1)
+	{
+		fprintf(stdout, " ");
+	}
+
 	for (ind = 1; ind < argc; ++ind) 
 	{
-		if (ind == argc - 1 && argv[argc - 1][0] == '\n')
-		{
-			fprintf(stdout, "\n");
-			return EXIT_SUCCESS;
-		}
-		else
-		{
-			fprintf(stdout, "%s ", argv[ind]);
-		}
+		fprintf(stdout, "%s ", argv[ind]);
 	}
 	
 
