@@ -5,15 +5,17 @@ void partitionAll(int value)
 {
 	if (!value) // Base case
 	{
-		fprintf(stdout, "/n");
+		fprintf(stdout, "\n");
 		return;
 	}
 
-	int i;
-	for (i = 1; i <= value; i++)
+	fprintf(stdout, " + ");
+
+	int i = 1;
+	for (; i <= value; i++)
 	{
-		partitionAll(value - i); // Recursive call
 		fprintf(stdout, "%d", i);
+		partitionAll(value - i); // Recursive call
 	}
 
 	return;
