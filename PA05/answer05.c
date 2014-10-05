@@ -3,7 +3,8 @@
 
 void partitionAll(int value)
 {
-	fprintf(stdout, "Yo whatup!");
+	
+
 	return;
 }
 
