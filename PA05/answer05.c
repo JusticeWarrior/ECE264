@@ -3,6 +3,11 @@
 
 void partitionAll(int value)
 {
+	
+}
+
+void partitionAllRecur(int value, char* output)
+{
 	if (!value) // Base case
 	{
 		fprintf(stdout, "\n");
