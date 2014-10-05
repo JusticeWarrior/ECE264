@@ -3,7 +3,18 @@
 
 void partitionAll(int value)
 {
-	
+	if (!value) // Base case
+	{
+		fprintf(stdout, "/n");
+		return;
+	}
+
+	int i;
+	for (i = 1; i <= value; i++)
+	{
+		partitionAll(value - i); // Recursive call
+		fprintf(stdout, "%d", i);
+	}
 
 	return;
 }
