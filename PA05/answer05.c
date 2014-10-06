@@ -13,7 +13,7 @@ void partitionAllRecur(int value, char* output)
 {
 	if (!value) // Base case
 	{
-		fprintf(stdout, "%s\n", output);
+		fprintf(stdout, "%.*s\n", strlen(output) - 3, output);
 		return;
 	}
 
@@ -24,8 +24,8 @@ void partitionAllRecur(int value, char* output)
 		sprintf(addition, "%d", i);
 		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
 		strcpy(recurOutput, output);
-		strcat(recurOutput, " + ");
 		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
 		partitionAllRecur(value - i, recurOutput); // Recursive call
 		free(recurOutput);
 	}
