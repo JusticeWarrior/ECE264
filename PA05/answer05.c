@@ -10,6 +10,8 @@ void partitionEvenRecur(int value, char* output);
 void partitionAlterEvenRecur(int value, char* output);
 void partitionAlterOddRecur(int value, char* output);
 void partitionEvenOddStartRecur(int value, char* output);
+int nextPrime(int value);
+void partitionPrimeRecur(int value, char* output);
 
 void partitionAll(int value)
 {
@@ -249,5 +251,39 @@ void partitionAlterOddRecur(int value, char* output)
 
 void partitionPrime(int value)
 {
+	partitionPrimeRecur(value, "= ");
+	return;
+}
+
+int nextPrime(int value)
+{
+	do
+	{
+		value++;
+	} while (!((value == 2 || value % 2) && (value == 3 || value % 3) && (value == 5 || value % 5) && (value == 7 || value % 7) && (value == 11 || value % 11) && (value == 13 || value % 13) && (value == 17 || value % 17)));
+	return value;
+}
+
+void partitionPrimeRecur(int value, char* output)
+{
+	if (!value) // Base case
+	{
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
+		return;
+	}
+
+	int i = 1;
+	for (; i <= value; i = nextPrime(i))
+	{
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
+		partitionPrimeRecur(value - i, recurOutput); // Recursive call
+		free(recurOutput);
+	}
+
 	return;
 }
