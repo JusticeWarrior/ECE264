@@ -130,6 +130,7 @@ void partitionOddRecur(int value, char* output)
 
 void partitionEven(int value)
 {
+	partitionEvenRecur(value, "= ");
 	return;
 }
 
