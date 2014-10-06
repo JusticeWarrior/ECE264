@@ -20,9 +20,14 @@ void partitionAllRecur(int value, char* output)
 	int i = 1;
 	for (; i <= value; i++)
 	{
-		char* addition = atoi(i);
-		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + sizeof(char) * strlen(addition));
-		partitionAll(value - i); // Recursive call
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, " + ");
+		strcat(recurOutput, addition);
+		partitionAllRecur(value - i, recurOutput); // Recursive call
+		free(recurOutput);
 	}
 
 	return;
