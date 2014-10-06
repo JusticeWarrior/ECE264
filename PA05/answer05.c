@@ -216,7 +216,7 @@ void partitionAlterEvenRecur(int value, char* output)
 		strcpy(recurOutput, output);
 		strcat(recurOutput, addition);
 		strcat(recurOutput, " + ");
-		partitionOddRecur(value - i, recurOutput); // Recursive call
+		partitionAlterOddRecur(value - i, recurOutput); // Recursive call
 		free(recurOutput);
 	}
 
@@ -240,7 +240,7 @@ void partitionAlterOddRecur(int value, char* output)
 		strcpy(recurOutput, output);
 		strcat(recurOutput, addition);
 		strcat(recurOutput, " + ");
-		partitionEvenRecur(value - i, recurOutput); // Recursive call
+		partitionAlterEvenRecur(value - i, recurOutput); // Recursive call
 		free(recurOutput);
 	}
 
