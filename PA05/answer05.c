@@ -58,7 +58,7 @@ void partitionIncreRecur(int value, int startVal, char* output)
 		strcpy(recurOutput, output);
 		strcat(recurOutput, addition);
 		strcat(recurOutput, " + ");
-		partitionIncreRecur(value - i, i, recurOutput); // Recursive call
+		partitionIncreRecur(value - i, i + 1, recurOutput); // Recursive call
 		free(recurOutput);
 	}
 
