@@ -99,6 +99,7 @@ void partitionDecreRecur(int value, int endVal, char* output)
 
 void partitionOdd(int value)
 {
+	partitionOddRecur(value, "= ");
 	return;
 }
 
@@ -119,7 +120,7 @@ void partitionOddRecur(int value, char* output)
 		strcpy(recurOutput, output);
 		strcat(recurOutput, addition);
 		strcat(recurOutput, " + ");
-		partitionAllRecur(value - i, recurOutput); // Recursive call
+		partitionOddRecur(value - i, recurOutput); // Recursive call
 		free(recurOutput);
 	}
 
