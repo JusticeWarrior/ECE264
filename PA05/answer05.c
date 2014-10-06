@@ -272,7 +272,7 @@ void partitionPrimeRecur(int value, char* output)
 		return;
 	}
 
-	int i = 1;
+	int i = 2;
 	for (; i <= value; i = nextPrime(i))
 	{
 		char addition[5];
