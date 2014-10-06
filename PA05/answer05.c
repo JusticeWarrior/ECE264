@@ -7,6 +7,9 @@ void partitionIncreRecur(int value, int startVal, char* output);
 void partitionDecreRecur(int value, int endVal, char* output);
 void partitionOddRecur(int value, char* output);
 void partitionEvenRecur(int value, char* output);
+void partitionAlterEvenRecur(int value, char* output);
+void partitionAlterOddRecur(int value, char* output);
+void partitionEvenOddStartRecur(int value, char* output);
 
 void partitionAll(int value)
 {
@@ -160,6 +163,87 @@ void partitionEvenRecur(int value, char* output)
 
 void partitionOddAndEven(int value)
 {
+	partitionEvenOddStartRecur(value, "= ");
+	return;
+}
+
+void partitionEvenOddStartRecur(int value, char* output)
+{
+	if (!value) // Base case
+	{
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
+		return;
+	}
+
+	int i = 1;
+	for (; i <= value; i++)
+	{
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
+		if (i % 2)
+		{
+			partitionAlterEvenRecur(value - i, recurOutput); // Recursive call
+		}
+		else
+		{
+			partitionAlterOddRecur(value - i, recurOutput); // Recursive call
+		}
+		
+		free(recurOutput);
+	}
+
+	return;
+}
+
+void partitionAlterEvenRecur(int value, char* output)
+{
+	if (!value) // Base case
+	{
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
+		return;
+	}
+
+	int i = 2;
+	for (; i <= value; i += 2)
+	{
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
+		partitionOddRecur(value - i, recurOutput); // Recursive call
+		free(recurOutput);
+	}
+
+	return;
+}
+
+void partitionAlterOddRecur(int value, char* output)
+{
+	if (!value) // Base case
+	{
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
+		return;
+	}
+
+	int i = 1;
+	for (; i <= value; i += 2)
+	{
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
+		partitionEvenRecur(value - i, recurOutput); // Recursive call
+		free(recurOutput);
+	}
+
 	return;
 }
 
