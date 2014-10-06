@@ -6,6 +6,7 @@ void partitionAllRecur(int value, char* output);
 void partitionIncreRecur(int value, int startVal, char* output);
 void partitionDecreRecur(int value, int endVal, char* output);
 void partitionOddRecur(int value, char* output);
+void partitionEvenRecur(int value, char* output);
 
 void partitionAll(int value)
 {
@@ -129,6 +130,30 @@ void partitionOddRecur(int value, char* output)
 
 void partitionEven(int value)
 {
+	return;
+}
+
+void partitionEvenRecur(int value, char* output)
+{
+	if (!value) // Base case
+	{
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
+		return;
+	}
+
+	int i = 2;
+	for (; i <= value; i += 2)
+	{
+		char addition[5];
+		sprintf(addition, "%d", i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + (sizeof(char) * strlen(addition) + 1));
+		strcpy(recurOutput, output);
+		strcat(recurOutput, addition);
+		strcat(recurOutput, " + ");
+		partitionEvenRecur(value - i, recurOutput); // Recursive call
+		free(recurOutput);
+	}
+
 	return;
 }
 
