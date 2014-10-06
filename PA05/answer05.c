@@ -13,7 +13,7 @@ void partitionAllRecur(int value, char* output)
 {
 	if (!value) // Base case
 	{
-		fprintf(stdout, "%.*s\n", strlen(output) - 3, output);
+		fprintf(stdout, "%.*s\n", (int)strlen(output) - 3, output);
 		return;
 	}
 
