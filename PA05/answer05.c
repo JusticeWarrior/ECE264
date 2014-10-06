@@ -1,25 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+void partitionAllRecur(int value, char* output);
 
 void partitionAll(int value)
 {
-	
+	partitionAllRecur(value, "= ");
 }
 
 void partitionAllRecur(int value, char* output)
 {
 	if (!value) // Base case
 	{
-		fprintf(stdout, "\n");
+		fprintf(stdout, "%s\n", output);
 		return;
 	}
-
-	fprintf(stdout, " + ");
 
 	int i = 1;
 	for (; i <= value; i++)
 	{
-		fprintf(stdout, "%d", i);
+		char* addition = atoi(i);
+		char* recurOutput = malloc(sizeof(char) * strlen(output) + sizeof(char) * 3 + sizeof(char) * strlen(addition));
 		partitionAll(value - i); // Recursive call
 	}
 
