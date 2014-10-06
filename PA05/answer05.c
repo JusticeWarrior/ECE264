@@ -30,35 +30,35 @@ void partitionAllRecur(int value, char* output)
 		free(recurOutput);
 	}
 
-	//return;
+	return;
 }
 
 void partitionIncreasing(int value)
 {
-	//return;
+	return;
 }
 
 void partitionDecreasing(int value)
 {
-	//return;
+	return;
 }
 
 void partitionOdd(int value)
 {
-	//return;
+	return;
 }
 
 void partitionEven(int value)
 {
-	//return;
+	return;
 }
 
 void partitionOddAndEven(int value)
 {
-	//return;
+	return;
 }
 
 void partitionPrime(int value)
 {
-	//return;
+	return;
 }
