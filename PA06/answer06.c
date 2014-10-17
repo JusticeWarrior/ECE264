@@ -1,6 +1,7 @@
 #include "answer06.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct
 {
@@ -30,11 +31,21 @@ void Dispose_Maze(Maze* maze)
 
 void print_directions(char** input, int w, int h)
 {
-	Maze* maze = Create_Maze(input, w, h);
+	
+	int i;
+	for (i = 0; i < (int)strlen(input[0]); i++)
+	{
+		if (input[0][i] == ' ')
+		{
+			Maze* maze = Create_Maze(input, w, h);
+			Print_Directions_Recur(maze, i, 0, 3);
+			Dispose_Maze(maze);
+			return;
+		}
+	}
 
-	Print_Directions_Recur(maze, 3, 0, 3);
-
-	Dispose_Maze(maze);
+	fprintf(stdout, "There needs to be an entrance at the top of the maze dumbass!");
+	
 }
 
 #define UP 1
