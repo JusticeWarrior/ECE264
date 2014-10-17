@@ -68,7 +68,7 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 				fprintf(stdout, "W 1\n");
 			}
 			// Check up
-			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
+			if (y - 1 >= 0 && maze->maze[y - 1][x] == ' ')
 			{
 				fprintf(stdout, "N 1\n");
 				Print_Directions_Recur(maze, x, y - 1, UP);
@@ -99,7 +99,7 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 				fprintf(stdout, "W 1\n");
 			}
 			// Check up
-			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
+			if (y - 1 >= 0 && maze->maze[y - 1][x] == ' ')
 			{
 				fprintf(stdout, "N 1\n");
 				Print_Directions_Recur(maze, x, y - 1, UP);
@@ -146,7 +146,7 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 
 			}
 			// Check up
-			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
+			if (y - 1 >= 0 && maze->maze[y - 1][x] == ' ')
 			{
 				fprintf(stdout, "N 1\n");
 				Print_Directions_Recur(maze, x, y - 1, UP);
