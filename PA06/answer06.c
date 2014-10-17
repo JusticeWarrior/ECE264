@@ -41,6 +41,11 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 	switch (direction)
 	{
 		case UP:
+			// Check to the right
+			if (x + 1 < maze->w && maze->maze[y][x + 1] == ' ')
+			{
+				fprintf(stdout, "I can move Right");
+			}
 			break;
 		case RIGHT:
 			break;
