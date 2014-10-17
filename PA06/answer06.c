@@ -50,22 +50,25 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 			// Check to the right
 			if (x + 1 < maze->w && maze->maze[y][x + 1] == ' ')
 			{
-				fprintf(stdout, "I can move right");
+				fprintf(stdout, "E 1\n");
+				Print_Directions_Recur(maze, x + 1, y, RIGHT);
+				fprintf(stdout, "W 1\n");
 			}
 			// Check down
 			if (y + 1 < maze->h && maze->maze[y + 1][x] == ' ')
 			{
-				fprintf(stdout, "I can move down");
+				fprintf(stdout, "S 1\n");
+
 			}
 			// Check to the left
 			if (x - 1 >= 0 && maze->maze[y][x - 1] == ' ')
 			{
-				fprintf(stdout, "I can move left");
+				fprintf(stdout, "W 1\n");
 			}
 			// Check up
 			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
 			{
-				fprintf(stdout, "I can move up");
+				fprintf(stdout, "N 1\n");
 			}
 			break;
 		case RIGHT:
