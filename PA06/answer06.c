@@ -31,4 +31,22 @@ void print_directions(char** input, int w, int h)
 	Dispose_Maze(maze);
 }
 
-//void Print_Directions_Recur(char** maze, int w, int h, )
+#define UP 1
+#define RIGHT 2
+#define DOWN 3
+#define LEFT 4
+
+void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
+{
+	switch (direction)
+	{
+		case UP:
+			break;
+		case RIGHT:
+			break;
+		case DOWN:
+			break;
+		case LEFT:
+			break;
+	}
+}
