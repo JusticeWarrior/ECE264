@@ -58,17 +58,23 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 			if (y + 1 < maze->h && maze->maze[y + 1][x] == ' ')
 			{
 				fprintf(stdout, "S 1\n");
+				Print_Directions_Recur(maze, x, y + 1, DOWN);
+				fprintf(stdout, "N 1\n");
 
 			}
 			// Check to the left
 			if (x - 1 >= 0 && maze->maze[y][x - 1] == ' ')
 			{
 				fprintf(stdout, "W 1\n");
+				Print_Directions_Recur(maze, x - 1, y, LEFT);
+				fprintf(stdout, "E 1\n");
 			}
 			// Check up
 			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
 			{
 				fprintf(stdout, "N 1\n");
+				Print_Directions_Recur(maze, x, y - 1, UP);
+				fprintf(stdout, "S 1\n");
 			}
 			break;
 		case RIGHT:
