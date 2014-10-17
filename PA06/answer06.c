@@ -29,17 +29,17 @@ void Dispose_Maze(Maze* maze)
 	free(maze);
 }
 
-void print_directions(char** input, int w, int h)
+void print_directions(char** maze, int w, int h)
 {
 	
 	int i;
-	for (i = 0; i < (int)strlen(input[0]); i++)
+	for (i = 0; i < (int)strlen(maze[0]); i++)
 	{
-		if (input[0][i] == ' ')
+		if (maze[0][i] == ' ')
 		{
-			Maze* maze = Create_Maze(input, w, h);
-			Print_Directions_Recur(maze, i, 0, 3);
-			Dispose_Maze(maze);
+			Maze* imaze = Create_Maze(maze, w, h);
+			Print_Directions_Recur(imaze, i, 0, 3);
+			Dispose_Maze(imaze);
 			return;
 		}
 	}
