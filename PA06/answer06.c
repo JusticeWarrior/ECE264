@@ -9,6 +9,10 @@ typedef struct
 	int h;
 } Maze;
 
+void Print_Directions_Recur(Maze* maze, int x, int y, int direction);
+Maze* Create_Maze(char ** input, int w, int h);
+void Dispose_Maze(Maze* maze);
+
 Maze* Create_Maze(char ** input, int w, int h)
 {
 	Maze* maze = malloc(sizeof(Maze));
@@ -27,6 +31,8 @@ void Dispose_Maze(Maze* maze)
 void print_directions(char** input, int w, int h)
 {
 	Maze* maze = Create_Maze(input, w, h);
+
+	Print_Directions_Recur(maze, 4, 1, 1);
 
 	Dispose_Maze(maze);
 }
