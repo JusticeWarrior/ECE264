@@ -32,7 +32,7 @@ void print_directions(char** input, int w, int h)
 {
 	Maze* maze = Create_Maze(input, w, h);
 
-	Print_Directions_Recur(maze, 4, 1, 1);
+	Print_Directions_Recur(maze, 1, 1, 1);
 
 	Dispose_Maze(maze);
 }
@@ -72,6 +72,7 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 			}
 			break;
 		case RIGHT:
+			
 			break;
 		case DOWN:
 			break;
