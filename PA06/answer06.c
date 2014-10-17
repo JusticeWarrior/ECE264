@@ -32,7 +32,7 @@ void print_directions(char** input, int w, int h)
 {
 	Maze* maze = Create_Maze(input, w, h);
 
-	Print_Directions_Recur(maze, 1, 1, 1);
+	Print_Directions_Recur(maze, 3, 0, 3);
 
 	Dispose_Maze(maze);
 }
@@ -56,13 +56,12 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 				Print_Directions_Recur(maze, x + 1, y, RIGHT);
 				fprintf(stdout, "W 1\n");
 			}
-			// Check down
-			if (y + 1 < maze->h && maze->maze[y + 1][x] == ' ')
+			// Check up
+			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
 			{
-				fprintf(stdout, "S 1\n");
-				Print_Directions_Recur(maze, x, y + 1, DOWN);
 				fprintf(stdout, "N 1\n");
-
+				Print_Directions_Recur(maze, x, y - 1, UP);
+				fprintf(stdout, "S 1\n");
 			}
 			// Check to the left
 			if (x - 1 >= 0 && maze->maze[y][x - 1] == ' ')
@@ -81,12 +80,12 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 				fprintf(stdout, "N 1\n");
 
 			}
-			// Check to the left
-			if (x - 1 >= 0 && maze->maze[y][x - 1] == ' ')
+			// Check to the right
+			if (x + 1 < maze->w && maze->maze[y][x + 1] == ' ')
 			{
-				fprintf(stdout, "W 1\n");
-				Print_Directions_Recur(maze, x - 1, y, LEFT);
 				fprintf(stdout, "E 1\n");
+				Print_Directions_Recur(maze, x + 1, y, RIGHT);
+				fprintf(stdout, "W 1\n");
 			}
 			// Check up
 			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
@@ -111,21 +110,21 @@ void Print_Directions_Recur(Maze* maze, int x, int y, int direction)
 				Print_Directions_Recur(maze, x - 1, y, LEFT);
 				fprintf(stdout, "E 1\n");
 			}
-			// Check up
-			if (y - 1 < 0 && maze->maze[y - 1][x] == ' ')
+			// Check down
+			if (y + 1 < maze->h && maze->maze[y + 1][x] == ' ')
 			{
-				fprintf(stdout, "N 1\n");
-				Print_Directions_Recur(maze, x, y - 1, UP);
 				fprintf(stdout, "S 1\n");
+				Print_Directions_Recur(maze, x, y + 1, DOWN);
+				fprintf(stdout, "N 1\n");
 			}
 			break;
 		case LEFT:
-			// Check to the right
-			if (x + 1 < maze->w && maze->maze[y][x + 1] == ' ')
+			// Check to the left
+			if (x - 1 >= 0 && maze->maze[y][x - 1] == ' ')
 			{
-				fprintf(stdout, "E 1\n");
-				Print_Directions_Recur(maze, x + 1, y, RIGHT);
 				fprintf(stdout, "W 1\n");
+				Print_Directions_Recur(maze, x - 1, y, LEFT);
+				fprintf(stdout, "E 1\n");
 			}
 			// Check down
 			if (y + 1 < maze->h && maze->maze[y + 1][x] == ' ')
