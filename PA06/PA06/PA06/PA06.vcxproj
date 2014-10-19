@@ -66,7 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\answer06.c" />
-    <ClCompile Include="..\..\pa06.c" />
+    <ClCompile Include="..\..\LetsTestThisShit.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\answer06.h" />
