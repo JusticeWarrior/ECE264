@@ -33,7 +33,7 @@ void print_directions(char** maze, int w, int h)
 {
 	
 	int i;
-	for (i = 0; i < (int)strlen(maze[1]); i++)
+	for (i = 0; i < w; i++)
 	{
 		if (maze[0][i] == ' ')
 		{
