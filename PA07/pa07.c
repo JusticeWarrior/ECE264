@@ -66,7 +66,7 @@ int compare(char ** argv)
 
 int main(int argc, char * * argv)
 {
-	if (argc != 6) {
+	if (argc != 7) {
 		print_usage(argv[0]);
 		if (argc == 2 && strcmp(argv[1], "--help") == 0)
 			return EXIT_SUCCESS;
@@ -83,6 +83,8 @@ int main(int argc, char * * argv)
 	strcpy(outputImage, argv[4]);
 	char outputLinImage[40];
 	strcpy(outputLinImage, argv[5]);
+	char testLinImage[40];
+	strcpy(testLinImage, argv[6]);
 
 	if (setting[0] == 'b')
 	{
@@ -100,6 +102,13 @@ int main(int argc, char * * argv)
 			return EXIT_FAILURE;
 		}
 
+		Image_free(test1);
+		argv[1] = outputImage;
+		argv[2] = compImage;
+		int result = compare(argv);
+		if (result != 0)
+			return result;
+
 		test1 = Image_loadbmp(inputImage);
 
 		if (test1 == NULL)
@@ -116,17 +125,11 @@ int main(int argc, char * * argv)
 			return EXIT_FAILURE;
 		}
 
-		argv[1] = outputImage;
-		int result = compare(argv);
-		if (result != 0)
-			return result;
-
 		argv[1] = outputLinImage;
+		argv[2] = testLinImage;
 		result = compare(argv);
 		if (result != 0)
 			return result;
-
-		Image_free(test1);
 	}
 
 	if (setting[0] == 'e')
@@ -145,6 +148,8 @@ int main(int argc, char * * argv)
 			return EXIT_FAILURE;
 		}
 
+		Image_free(test1);
+
 		test1 = Image_load(inputImage);
 
 		if (test1 == NULL)
@@ -161,17 +166,18 @@ int main(int argc, char * * argv)
 			return EXIT_FAILURE;
 		}
 
+		Image_free(test1);
 		argv[1] = outputImage;
+		argv[2] = compImage;
 		int result = compare(argv);
 		if (result != 0)
 			return result;
 
 		argv[1] = outputLinImage;
+		argv[2] = testLinImage;
 		result = compare(argv);
 		if (result != 0)
 			return result;
-
-		Image_free(test1);
 	}
 
 	return EXIT_SUCCESS;
