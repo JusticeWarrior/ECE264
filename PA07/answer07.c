@@ -341,22 +341,22 @@ Image * Image_load(const char * filename)
 
 	ImageHeader* header = malloc(sizeof(ImageHeader));
 
-	if (!fread(&(header->magic_number), sizeof(uint16_t), 1, file))
+	if (!fread(&(header->magic_number), sizeof(uint32_t), 1, file))
 		return NULL;
 	if (header->magic_number != ECE264_IMAGE_MAGIC_NUMBER)
 		return NULL;
 
-	if (!fread(&(header->width), sizeof(uint16_t), 1, file))
+	if (!fread(&(header->width), sizeof(uint32_t), 1, file))
 		return NULL;
 	if (header->width == 0)
 		return NULL;
 
-	if (!fread(&(header->height), sizeof(uint16_t), 1, file))
+	if (!fread(&(header->height), sizeof(uint32_t), 1, file))
 		return NULL;
 	if (header->height == 0)
 		return NULL;
 
-	if (!fread(&(header->comment_len), sizeof(uint16_t), 1, file))
+	if (!fread(&(header->comment_len), sizeof(uint32_t), 1, file))
 		return NULL;
 	if (header->comment_len == 0)
 		return NULL;
@@ -370,11 +370,27 @@ Image * Image_load(const char * filename)
 	if (image->comment == NULL)
 		return NULL;
 
-	image->data = malloc(sizeof(char) * header->height * header->width);
+	image->data = malloc(sizeof(char) * (int)header->height * (int)header->width);
 	if (image->data == NULL)
 		return NULL;
 
-	return NULL;
+	int i;
+	for (i = 0; i < ((int)header->comment_len - 1); i++)
+	{
+		image->comment[i] = fgetc(file);
+	}
+	if (fgetc(file) != '\0')
+		return NULL;
+	image->comment[i] = '\0';
+
+
+	if (fread(image->data, sizeof(uint8_t), image->width * image->height, file) != image->width * image->height)
+		return NULL;
+	
+	if (!feof(file))
+		return NULL;
+
+	return image;
 }
 
 int Image_save(const char * filename, Image * image)
