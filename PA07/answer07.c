@@ -366,6 +366,14 @@ Image * Image_load(const char * filename)
 	image->width = header->width;
 	image->height = header->height;
 
+	image->comment = malloc(sizeof(char) * header->comment_len);
+	if (image->comment == NULL)
+		return NULL;
+
+	image->data = malloc(sizeof(char) * header->height * header->width);
+	if (image->data == NULL)
+		return NULL;
+
 	return NULL;
 }
 
