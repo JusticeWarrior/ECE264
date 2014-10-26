@@ -334,6 +334,14 @@ static void BMP_printHeader(BMP_Header * header)
 
 Image * Image_load(const char * filename)
 {
+	FILE * file = fopen(filename, "rb");
+
+	if (file == NULL)
+		return NULL;
+
+	ImageHeader header;
+	Image image;
+
 	return NULL;
 }
 
