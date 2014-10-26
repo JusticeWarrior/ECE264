@@ -339,8 +339,32 @@ Image * Image_load(const char * filename)
 	if (file == NULL)
 		return NULL;
 
-	ImageHeader header;
-	Image image;
+	ImageHeader* header = malloc(sizeof(ImageHeader));
+
+	if (!fread(&(header->magic_number), sizeof(uint16_t), 1, file))
+		return NULL;
+	if (header->magic_number != ECE264_IMAGE_MAGIC_NUMBER)
+		return NULL;
+
+	if (!fread(&(header->width), sizeof(uint16_t), 1, file))
+		return NULL;
+	if (header->width == 0)
+		return NULL;
+
+	if (!fread(&(header->height), sizeof(uint16_t), 1, file))
+		return NULL;
+	if (header->height == 0)
+		return NULL;
+
+	if (!fread(&(header->comment_len), sizeof(uint16_t), 1, file))
+		return NULL;
+	if (header->comment_len == 0)
+		return NULL;
+
+	Image* image  = malloc(sizeof(Image));
+
+	image->width = header->width;
+	image->height = header->height;
 
 	return NULL;
 }
