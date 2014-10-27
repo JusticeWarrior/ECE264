@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-//#include <libgen.h>
+#include <libgen.h>
 #include <string.h>
 
 // ------------------------------------------------------------------ Predefines
@@ -108,21 +108,21 @@ Image * Image_loadbmp(const char * filename)
 		tmp_im->width = header.width;
 		tmp_im->height = header.height;
 
-		//// Handle the comment
-		//char * filename_cpy = strdup(filename);	// we want to call basename
-		//char * file_basename = basename(filename_cpy); // requires editable str
-		//const char * prefix = "Original BMP file: ";
-		//n_bytes = sizeof(char) * (strlen(prefix) + strlen(file_basename) + 1);
-		//tmp_im->comment = malloc(n_bytes);
-		//if (tmp_im->comment == NULL) {
-		//	fprintf(stderr, "Failed to allocate %zd bytes for comment\n",
-		//		n_bytes);
-		//	err = TRUE;
-		//}
-		//else {
-		//	sprintf(tmp_im->comment, "%s%s", prefix, file_basename);
-		//}
-		//free(filename_cpy); // this also takes care of file_basename
+		// Handle the comment
+		char * filename_cpy = strdup(filename);	// we want to call basename
+		char * file_basename = basename(filename_cpy); // requires editable str
+		const char * prefix = "Original BMP file: ";
+		n_bytes = sizeof(char) * (strlen(prefix) + strlen(file_basename) + 1);
+		tmp_im->comment = malloc(n_bytes);
+		if (tmp_im->comment == NULL) {
+			fprintf(stderr, "Failed to allocate %zd bytes for comment\n",
+				n_bytes);
+			err = TRUE;
+		}
+		else {
+			sprintf(tmp_im->comment, "%s%s", prefix, file_basename);
+		}
+		free(filename_cpy); // this also takes care of file_basename
 
 		// Handle image data
 		n_bytes = sizeof(uint8_t) * header.width * header.height;

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "answer07.h"
-//#include <libgen.h>
+#include <libgen.h>
 
 void print_usage(char * argv0)
 {
@@ -19,7 +19,7 @@ void print_usage(char * argv0)
 		"      are different, and 2 if there is some error reading the\n"
 		"      files.\n"
 		"\n");
-	//basename(argv0));
+	basename(argv0));
 }
 
 int compare(char ** argv)
