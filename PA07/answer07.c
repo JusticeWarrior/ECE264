@@ -337,62 +337,139 @@ Image * Image_load(const char * filename)
 	FILE * file = fopen(filename, "rb");
 
 	if (file == NULL)
+	{
 		return NULL;
-
+	}
+		
 	ImageHeader* header = malloc(sizeof(ImageHeader));
 
 	if (!fread(&(header->magic_number), sizeof(uint32_t), 1, file))
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 	if (header->magic_number != ECE264_IMAGE_MAGIC_NUMBER)
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	if (!fread(&(header->width), sizeof(uint32_t), 1, file))
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 	if (header->width == 0)
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	if (!fread(&(header->height), sizeof(uint32_t), 1, file))
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 	if (header->height == 0)
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	if (!fread(&(header->comment_len), sizeof(uint32_t), 1, file))
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 	if (header->comment_len == 0)
+	{
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	Image* image  = malloc(sizeof(Image));
 
 	image->width = header->width;
 	image->height = header->height;
 
-	image->comment = malloc(sizeof(char) * header->comment_len);
+	image->comment = malloc(sizeof(char) * (int)(header->comment_len));
 	if (image->comment == NULL)
+	{
+		free(image->comment);
+		free(image);
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
-	image->data = malloc(sizeof(char) * (int)header->height * (int)header->width);
+	image->data = malloc(sizeof(uint8_t) * image->width * image->height);
 	if (image->data == NULL)
+	{
+		free(image->comment);
+		free(image->data);
+		free(image);
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	int i;
 	for (i = 0; i < ((int)header->comment_len - 1); i++)
 	{
-		image->comment[i] = fgetc(file);
+		//image->comment[i] = fgetc(file);
+		if (!fread(&(image->comment[i]), sizeof(char), 1, file))
+		{
+			free(image->comment);
+			free(image->data);
+			free(image);
+			free(header);
+			fclose(file);
+			return NULL;
+		}
 	}
 	if (fgetc(file) != '\0')
+	{
+		free(image->comment);
+		free(image->data);
+		free(image);
+		free(header);
+		fclose(file);
 		return NULL;
-	image->comment[i + 1] = '\0';
+	}
+	image->comment[i] = '\0';
 
 	for (i = 0; i < (image->width * image->height); i++)
 	{
 		if (!fread(&(image->data[i]), sizeof(uint8_t), 1, file))
+		{
+			free(image->comment);
+			free(image->data);
+			free(image);
+			free(header);
+			fclose(file);
 			return NULL;
+		}
 	}
 
 	fread(image->data, sizeof(uint8_t), 1, file);
 
 	if (!feof(file))
+	{
+		free(image->comment);
+		free(image->data);
+		free(image);
+		free(header);
+		fclose(file);
 		return NULL;
+	}
 
 	return image;
 }
