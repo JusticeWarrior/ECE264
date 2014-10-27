@@ -518,5 +518,13 @@ void Image_free(Image * image)
 
 void linearNormalization(int width, int height, uint8_t * intensity)
 {
+	int max = 0;
+	int min = 255;
+	int i;
+
+	for (i = 0; i < width * height; i++)
+	{
+
+	}
 
 }
