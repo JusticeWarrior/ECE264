@@ -476,12 +476,44 @@ Image * Image_load(const char * filename)
 
 int Image_save(const char * filename, Image * image)
 {
-	return 0;
+	FILE * file = fopen(filename, "wb");
+
+	if (file == NULL)
+		return FALSE;
+
+	uint32_t magicNumber[1] = { (uint32_t)ECE264_IMAGE_MAGIC_NUMBER };
+	fwrite(magicNumber, sizeof(uint32_t), 1, file);
+
+	uint32_t width[1] = { (uint32_t)image->width };
+	fwrite(width, sizeof(uint32_t), 1, file);
+
+	uint32_t height[1] = { (uint32_t)image->height };
+	fwrite(height, sizeof(uint32_t), 1, file);
+
+	uint32_t commentLen[1] = { (uint32_t)(strlen(image->comment) + 1) };
+	fwrite(commentLen, sizeof(uint32_t), 1, file);
+
+	int i;
+	for (i = 0; i < (int)commentLen[0]; i++)
+	{
+		fwrite(&image->comment[i], sizeof(char), 1, file);
+	}
+
+	for (i = 0; i < (image->width * image->height); i++)
+	{
+		fwrite(&image->data[i], sizeof(uint8_t), 1, file);
+	}
+
+	fclose(file);
+
+	return TRUE;
 }
 
 void Image_free(Image * image)
 {
-
+	free(image->comment);
+	free(image->data);
+	free(image);
 }
 
 void linearNormalization(int width, int height, uint8_t * intensity)
