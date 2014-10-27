@@ -18,7 +18,7 @@ void print_usage(char * argv0)
 		"      Exit status is 0 if the files are the \"same\", 1 if they\n"
 		"      are different, and 2 if there is some error reading the\n"
 		"      files.\n"
-		"\n");
+		"\n",
 	basename(argv0));
 }
 
