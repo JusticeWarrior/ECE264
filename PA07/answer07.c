@@ -471,6 +471,7 @@ Image * Image_load(const char * filename)
 		return NULL;
 	}
 
+	free(header);
 	return image;
 }
 
