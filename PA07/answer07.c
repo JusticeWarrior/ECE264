@@ -299,38 +299,38 @@ static void BMP_printHeader(BMP_Header * header);
 ///**
 //* We are only interested in a subset of BMP functionality.
 //*/
-//static int BMP_checkValid(BMP_Header * header)
-//{
-//	// Make sure this is a BMP file
-//	if (header->type != BMP_MAGIC_NUMBER) return FALSE;
-//
-//	// Make sure we are getting 24 bits per pixel
-//	if (header->bits != 24) return FALSE;
-//
-//	// Make sure there is only one image plane
-//	if (header->planes != 1) return FALSE;
-//
-//	// Make sure there is no compression
-//	if (header->compression != 0) return FALSE;
-//
-//	// We're winners!!!
-//	return TRUE;
-//}
-//
-//// ------------------------------------------------------------- BMP_printHeader
-//
-//static void BMP_printHeader(BMP_Header * header)
-//{
-//	printf("Printing BMP header information:\n");
-//	printf("  file type (should be %x): %x\n", BMP_MAGIC_NUMBER, header->type);
-//	printf("  file size: %d\n", header->size);
-//	printf("  offset to image data: %d\n", header->offset);
-//	printf("  header size: %d\n", header->header_size);
-//	printf("  width: %d\n", header->width);
-//	printf("  height: %d\n", header->height);
-//	printf("  planes: %d\n", header->planes);
-//	printf("  bits: %d\n", header->bits);
-//}
+static int BMP_checkValid(BMP_Header * header)
+{
+	// Make sure this is a BMP file
+	if (header->type != BMP_MAGIC_NUMBER) return FALSE;
+
+	// Make sure we are getting 24 bits per pixel
+	if (header->bits != 24) return FALSE;
+
+	// Make sure there is only one image plane
+	if (header->planes != 1) return FALSE;
+
+	// Make sure there is no compression
+	if (header->compression != 0) return FALSE;
+
+	// We're winners!!!
+	return TRUE;
+}
+
+// ------------------------------------------------------------- BMP_printHeader
+
+static void BMP_printHeader(BMP_Header * header)
+{
+	printf("Printing BMP header information:\n");
+	printf("  file type (should be %x): %x\n", BMP_MAGIC_NUMBER, header->type);
+	printf("  file size: %d\n", header->size);
+	printf("  offset to image data: %d\n", header->offset);
+	printf("  header size: %d\n", header->header_size);
+	printf("  width: %d\n", header->width);
+	printf("  height: %d\n", header->height);
+	printf("  planes: %d\n", header->planes);
+	printf("  bits: %d\n", header->bits);
+}
 
 Image * Image_load(const char * filename)
 {
