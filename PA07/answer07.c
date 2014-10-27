@@ -381,12 +381,16 @@ Image * Image_load(const char * filename)
 	}
 	if (fgetc(file) != '\0')
 		return NULL;
-	image->comment[i] = '\0';
+	image->comment[i + 1] = '\0';
 
+	for (i = 0; i < (image->width * image->height); i++)
+	{
+		if (!fread(&(image->data[i]), sizeof(uint8_t), 1, file))
+			return NULL;
+	}
 
-	if (fread(image->data, sizeof(uint8_t), image->width * image->height, file) != image->width * image->height)
-		return NULL;
-	
+	fread(image->data, sizeof(uint8_t), 1, file);
+
 	if (!feof(file))
 		return NULL;
 
