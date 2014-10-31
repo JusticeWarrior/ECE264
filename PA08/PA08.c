@@ -39,6 +39,14 @@ int main(int argc, char * * argv)
 	node8->next = node9;
 	node9->next = node7;
 
+	fprintf(stdout, "Original lists:\n");
+	fprintf(stdout, "List 1: ");
+	List_print(list1);
+	fprintf(stdout, "\n");
+	fprintf(stdout, "List 2: ");
+	List_print(list2);
+	fprintf(stdout, "\n\n");
+
 	int length1 = List_length(list1);
 	int length2 = List_length(list2);
 
@@ -50,15 +58,26 @@ int main(int argc, char * * argv)
 	list1 = List_sort(list1, strcmp);
 	list2 = List_sort(list2, strcmp);
 
+	fprintf(stdout, "Lists after sorting:\n");
+	fprintf(stdout, "List 1: ");
 	List_print(list1);
 	fprintf(stdout, "\n");
+	fprintf(stdout, "List 2: ");
 	List_print(list2);
 	fprintf(stdout, "\n\n");
 
 	List* combinedLists = List_merge(list1, list2, strcmp);
+	fprintf(stdout, "Combined list:\n");
 	List_print(combinedLists);
+	fprintf(stdout, "\n\n");
 
 	List_destroy(combinedLists);
+	fprintf(stdout, "After destroying the lists:\n");
+	fprintf(stdout, "List 1: ");
+	List_print(list1);
+	fprintf(stdout, "\n");
+	fprintf(stdout, "List 2: ");
+	List_print(list2);
 
 	return EXIT_SUCCESS;
 }
