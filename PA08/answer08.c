@@ -78,7 +78,6 @@ List * List_merge(List * lhs,
 	int(*compar)(const char *, const char*))
 {
 	List * head = NULL;
-	List * tail = head;
 
 	if (lhs != NULL && rhs != NULL)
 	{
@@ -88,6 +87,8 @@ List * List_merge(List * lhs,
 	{
 		return Null_List(lhs, rhs);
 	}
+
+	List * tail = head;
 
 	while (lhs != NULL && rhs != NULL)
 	{
