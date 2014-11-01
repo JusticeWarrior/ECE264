@@ -25,7 +25,14 @@ void List_destroy(List * list)
 
 int List_length(List * list)
 {
-	return 0;
+	int count = 0;
+	while (list != NULL)
+	{
+		list = list->next;
+		count++;
+	}
+
+	return count;
 }
 
 List * List_merge(List * lhs,
