@@ -16,7 +16,11 @@ List * List_createNode(const char * str)
 
 void List_destroy(List * list)
 {
-
+	if (list != NULL)
+	{
+		free(list->str);
+		free(list);
+	}
 }
 
 int List_length(List * list)
