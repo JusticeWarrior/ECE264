@@ -16,10 +16,12 @@ List * List_createNode(const char * str)
 
 void List_destroy(List * list)
 {
-	if (list != NULL)
+	while (list != NULL)
 	{
+		List * next = list->next;
 		free(list->str);
 		free(list);
+		list = next;
 	}
 }
 
