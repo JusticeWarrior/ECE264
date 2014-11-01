@@ -40,11 +40,24 @@ List * List_merge(List * lhs,
 	int(*compar)(const char *, const char*))
 {
 	List * head = NULL;
+	List * tail = NULL;
 
 	while (lhs != NULL && rhs != NULL)
 	{
-
+		
 	}
+
+	if (lhs == NULL)
+	{
+		tail->next = rhs;
+		return head;
+	}
+	else
+	{
+		tail->next = lhs;
+		return head;
+	}
+		
 }
 
 List * List_sort(List * list, int(*compar)(const char *, const char*))
