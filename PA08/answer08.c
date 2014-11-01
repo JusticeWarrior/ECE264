@@ -100,5 +100,31 @@ List * List_merge(List * lhs,
 
 List * List_sort(List * list, int(*compar)(const char *, const char*))
 {
-	return NULL;
+	// Base Case - already sorted lists
+	if (list == NULL || list->next == NULL)
+		return list;
+
+	// Split the list into two lists
+	
+	// List * lhs = list; -- lhs will just be list
+
+	List * rhs = list;
+	int length = List_length(list);
+	int i;
+	for (i = 0; i < (length / 2) - 1; i++)
+	{
+		rhs = rhs->next;
+	}
+	List * lhsTail = rhs;
+	rhs = rhs->next;
+	lhsTail->next = NULL;
+	
+	// Sort the two lists
+	list = List_sort(list, compar);
+	rhs = List_sort(rhs, compar);
+
+	// Merge the two lists
+	list = List_merge(list, rhs, compar);
+
+	return list;
 }
