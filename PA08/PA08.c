@@ -72,7 +72,9 @@ int main(int argc, char * * argv)
 	fprintf(stdout, "\n\n");
 
 	List_destroy(combinedLists);
-	fprintf(stdout, "After destroying the lists:\n");
+	list1 = NULL;
+	list2 = NULL;
+	fprintf(stdout, "After destroying the lists and assigning NULL:\n");
 	fprintf(stdout, "List 1: ");
 	List_print(list1);
 	fprintf(stdout, "\n");
