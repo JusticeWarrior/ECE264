@@ -39,7 +39,18 @@ List * List_merge(List * lhs,
 	List * rhs,
 	int(*compar)(const char *, const char*))
 {
-	return NULL;
+	List * head = lhs;
+
+	// Find the tail node
+	while (lhs->next != NULL)
+	{
+		lhs = lhs->next;
+	}
+	// Link the tail to the head of the right hand side
+	lhs->next = rhs;
+
+	// return the head of the left hand side
+	return head;
 }
 
 List * List_sort(List * list, int(*compar)(const char *, const char*))
