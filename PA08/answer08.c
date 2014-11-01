@@ -35,18 +35,39 @@ int List_length(List * list)
 	return count;
 }
 
-
-static void Append_Lists(List * lhs, List * rhs, List * tail)
+/**
+* When provided two lists, the function determines which list is 
+* NULL and returns the opposite list.
+*/
+static List * Null_List(List * lhs, List * rhs)
 {
 	if (lhs == NULL)
 	{
-		tail->next = rhs;
-		return;
+		return rhs;
 	}
 	else
 	{
-		tail->next = lhs;
-		return;
+		return lhs;
+	}
+}
+
+/**
+* When provided two pointers to nodes and a comparision function, the function determines which node
+* is larger, moves its position to be the next in the list and returns the larger node.
+*/
+static List * CompareNodes(List ** lhs, List ** rhs, int(*compar)(const char *, const char*))
+{
+	if (compar((*lhs)->str, (*rhs)->str) >= 0)
+	{
+		List * larger = *rhs;
+		*rhs = (*rhs)->next;
+		return larger;
+	}
+	else
+	{
+		List * larger = *lhs;
+		*lhs = (*lhs)->next;
+		return larger;
 	}
 }
 
@@ -55,41 +76,24 @@ List * List_merge(List * lhs,
 	int(*compar)(const char *, const char*))
 {
 	List * head = NULL;
-	List * tail = NULL;
+	List * tail = head;
 
 	if (lhs != NULL && rhs != NULL)
 	{
-		if (compar(lhs->str, rhs->str) >= 0)
-		{
-			head = rhs;
-			rhs = rhs->next;
-			tail = head;
-		}
-		else
-		{
-			head = lhs;
-			lhs = lhs->next;
-			tail = head;
-		}
+		head = CompareNodes(&lhs, &rhs, compar);
 	}
 	else
 	{
-		Append_Lists(lhs, rhs, tail);
-		return head;
+		return Null_List(lhs, rhs);
 	}
-
-	List * current;
 
 	while (lhs != NULL && rhs != NULL)
 	{
-		if (compar(lhs->str, rhs->str) >= 0)
-		{
-			current = rhs;
-			rhs = rhs->next;
-		}
+		tail->next = CompareNodes(&lhs, &rhs, compar);
+		tail = tail->next;
 	}
 
-	Append_Lists(lhs, rhs, tail);
+	tail->next = Null_List(lhs, rhs);
 	return head;
 		
 }
