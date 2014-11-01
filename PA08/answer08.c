@@ -35,6 +35,21 @@ int List_length(List * list)
 	return count;
 }
 
+
+static void Append_Lists(List * lhs, List * rhs, List * tail)
+{
+	if (lhs == NULL)
+	{
+		tail->next = rhs;
+		return;
+	}
+	else
+	{
+		tail->next = lhs;
+		return;
+	}
+}
+
 List * List_merge(List * lhs,
 	List * rhs,
 	int(*compar)(const char *, const char*))
@@ -42,21 +57,40 @@ List * List_merge(List * lhs,
 	List * head = NULL;
 	List * tail = NULL;
 
-	while (lhs != NULL && rhs != NULL)
+	if (lhs != NULL && rhs != NULL)
 	{
-		
-	}
-
-	if (lhs == NULL)
-	{
-		tail->next = rhs;
-		return head;
+		if (compar(lhs->str, rhs->str) >= 0)
+		{
+			head = rhs;
+			rhs = rhs->next;
+			tail = head;
+		}
+		else
+		{
+			head = lhs;
+			lhs = lhs->next;
+			tail = head;
+		}
 	}
 	else
 	{
-		tail->next = lhs;
+		Append_Lists(lhs, rhs, tail);
 		return head;
 	}
+
+	List * current;
+
+	while (lhs != NULL && rhs != NULL)
+	{
+		if (compar(lhs->str, rhs->str) >= 0)
+		{
+			current = rhs;
+			rhs = rhs->next;
+		}
+	}
+
+	Append_Lists(lhs, rhs, tail);
+	return head;
 		
 }
 
