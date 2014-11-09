@@ -89,7 +89,13 @@ BusinessNode * load_tree_from_file(char * filename)
 	while (!feof(file))
 	{
 		BusinessNode * newNode = read_node_line(line);
-		
+		if (newNode == NULL)
+		{
+			fclose(file);
+			return NULL;
+		}
+
+		tree_insert(newNode, root);
 	}
 
 	fclose(file);
