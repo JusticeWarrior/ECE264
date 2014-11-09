@@ -22,17 +22,16 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 {
 	if (root == NULL)
 	{
-		root = node;
-		return root;
+		return node;
 	}
 
 	int comp = strcmp(node->name, root->name);
 	if (comp == 0)
 		return root;
 	else if (comp < 0)
-		tree_insert(node, root->left);
+		root->left = tree_insert(node, root->left);
 	else
-		tree_insert(node, root->right);
+		root->right = tree_insert(node, root->right);
 	
 	return root;
 }
@@ -68,9 +67,9 @@ BusinessNode * load_tree_from_file(char * filename)
 		return NULL;
 
 	
-	char line[80];
+	char line[200];
 
-	fgets(line, 80, file);
+	fgets(line, 200, file);
 	if (feof(file))
 	{
 		fclose(file);
@@ -85,7 +84,7 @@ BusinessNode * load_tree_from_file(char * filename)
 		return NULL;
 	}
 
-	fgets(line, 50, file);
+	fgets(line, 200, file);
 	while (!feof(file))
 	{
 		BusinessNode * newNode = read_node_line(line);
@@ -96,6 +95,7 @@ BusinessNode * load_tree_from_file(char * filename)
 		}
 
 		tree_insert(newNode, root);
+		fgets(line, 200, file);
 	}
 
 	fclose(file);

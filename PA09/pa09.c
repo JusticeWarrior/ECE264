@@ -29,7 +29,7 @@ int main(int argc, char * * argv)
 		return EXIT_FAILURE;
 
 	search = NULL;
-	search = tree_search_name("Culver's", root);
+	search = tree_search_name("Culver's", shortFile);
 	fprintf(stdout, "Search for \"Culver's\":\n");
 	print_node(search);
 	fprintf(stdout, "\n");
@@ -48,7 +48,7 @@ int main(int argc, char * * argv)
 		return EXIT_FAILURE;
 
 	search = NULL;
-	search = tree_search_name("Rusconi's American Kitchen", root);
+	search = tree_search_name("Rusconi's American Kitchen", longFile);
 	fprintf(stdout, "Search for \"Rusconi's American Kitchen\":\n");
 	print_node(search);
 	fprintf(stdout, "\n");
