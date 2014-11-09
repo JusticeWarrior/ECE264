@@ -37,6 +37,16 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 
 BusinessNode * load_tree_from_file(char * filename)
 {
+	FILE * file = fopen(filename, "rt");
+
+	if (file == NULL)
+		return NULL;
+
+	while (!feof(file))
+	{
+		
+	}
+
 	return NULL;
 }
 
