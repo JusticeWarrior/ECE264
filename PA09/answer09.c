@@ -27,7 +27,10 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 
 	int comp = strcmp(node->name, root->name);
 	if (comp == 0)
+	{
+		free(node);
 		return root;
+	}
 	else if (comp < 0)
 		root->left = tree_insert(node, root->left);
 	else
@@ -131,18 +134,15 @@ void print_tree(BusinessNode * tree)
 	if (tree == NULL)
 		return;
 
-	print_tree(tree->left);
 	print_node(tree);
+	print_tree(tree->left);
 	print_tree(tree->right);
 }
 
 void destroy_tree(BusinessNode * root)
 {
 	if (root == NULL)
-	{
-		free(root);
 		return;
-	}
 
 	destroy_tree(root->left);
 	destroy_tree(root->right);
