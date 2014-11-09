@@ -9,9 +9,9 @@ static BusinessNode * read_node_line(char * line);
 BusinessNode * create_node(char * stars, char * name, char * address)
 {
 	BusinessNode * node = malloc(sizeof(BusinessNode));
-	node->stars = strdup(stars);
-	node->name = strdup(name);
-	node->address = strdup(address);
+	node->stars = stars;
+	node->name = name;
+	node->address = address;
 	node->left = NULL;
 	node->right = NULL;
 
@@ -56,7 +56,10 @@ static BusinessNode * read_node_line(char * line)
 	if (address == NULL)
 		return NULL;
 
-	return create_node(rating, name, address);
+	char * nstars = strdup(rating);
+	char * nname = strdup(name);
+	char * naddress = strdup(address);
+	return create_node(nstars, nname, naddress);
 }
 
 BusinessNode * load_tree_from_file(char * filename)
