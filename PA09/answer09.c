@@ -36,7 +36,12 @@ void print_node(BusinessNode * node)
 
 void print_tree(BusinessNode * tree)
 {
+	if (tree == NULL)
+		return;
 
+	print_tree(tree->left);
+	print_node(tree);
+	print_tree(tree->right);
 }
 
 void destroy_tree(BusinessNode * root)
