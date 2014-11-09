@@ -42,24 +42,24 @@ int main(int argc, char * * argv)
 
 	destroy_tree(shortFile);
 
-	// MAKE SURE IT IS CORRECT FROM HERE!! OTHERWISE YOU WILL HAVE TO PRINT ALL RESULTS OUT!
-	BusinessNode * longFile = load_tree_from_file("yelp_businesses.tsv");
-	if (longFile == NULL)
-		return EXIT_FAILURE;
+	//// MAKE SURE IT IS CORRECT FROM HERE!! OTHERWISE YOU WILL HAVE TO PRINT ALL RESULTS OUT!
+	//BusinessNode * longFile = load_tree_from_file("yelp_businesses.tsv");
+	//if (longFile == NULL)
+	//	return EXIT_FAILURE;
 
-	search = NULL;
-	search = tree_search_name("Rusconi's American Kitchen", longFile);
-	fprintf(stdout, "Search for \"Rusconi's American Kitchen\":\n");
-	print_node(search);
-	fprintf(stdout, "\n");
-	if (search == NULL)
-		return EXIT_FAILURE;
+	//search = NULL;
+	//search = tree_search_name("Rusconi's American Kitchen", longFile);
+	//fprintf(stdout, "Search for \"Rusconi's American Kitchen\":\n");
+	//print_node(search);
+	//fprintf(stdout, "\n");
+	//if (search == NULL)
+	//	return EXIT_FAILURE;
 
-	fprintf(stdout, "Third Tree:\n");
-	print_tree(longFile);
-	fprintf(stdout, "\n");
+	//fprintf(stdout, "Third Tree:\n");
+	//print_tree(longFile);
+	//fprintf(stdout, "\n");
 
-	destroy_tree(longFile);
+	//destroy_tree(longFile);
 
 	return EXIT_SUCCESS;
 
