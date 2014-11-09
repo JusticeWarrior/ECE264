@@ -6,6 +6,11 @@
 
 BusinessNode * create_node(char * stars, char * name, char * address)
 {
+	BusinessNode * node = malloc(sizeof(BusinessNode));
+	node->stars = strdup(stars);
+	node->name = strdup(name);
+	node->address = strdup(address);
+
 	return NULL;
 }
 
