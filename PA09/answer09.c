@@ -28,7 +28,7 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 	int comp = strcmp(node->name, root->name);
 	if (comp == 0)
 	{
-		free(node);
+		destroy_tree(node);
 		return root;
 	}
 	else if (comp < 0)
