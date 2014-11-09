@@ -25,6 +25,8 @@ int main(int argc, char * * argv)
 	destroy_tree(root);
 
 	BusinessNode * shortFile = load_tree_from_file("shortfile.tsv");
+	if (shortFile == NULL)
+		return EXIT_FAILURE;
 
 	search = NULL;
 	search = tree_search_name("Culver's", root);
@@ -42,6 +44,8 @@ int main(int argc, char * * argv)
 
 	// MAKE SURE IT IS CORRECT FROM HERE!! OTHERWISE YOU WILL HAVE TO PRINT ALL RESULTS OUT!
 	BusinessNode * longFile = load_tree_from_file("yelp_businesses.tsv");
+	if (longFile == NULL)
+		return EXIT_FAILURE;
 
 	search = NULL;
 	search = tree_search_name("Rusconi's American Kitchen", root);
