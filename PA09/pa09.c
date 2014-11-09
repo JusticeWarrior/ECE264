@@ -46,13 +46,13 @@ int main(int argc, char * * argv)
 	destroy_tree(shortFile);
 
 	// MAKE SURE IT IS CORRECT FROM HERE!! OTHERWISE YOU WILL HAVE TO PRINT ALL RESULTS OUT!
-	BusinessNode * longFile = load_tree_from_file("yelp_businesses.tsv");
+	BusinessNode * longFile = load_tree_from_file("middlefile.tsv");
 	if (longFile == NULL)
 		return EXIT_FAILURE;
 
 	search = NULL;
-	search = tree_search_name("Rusconi's American Kitchen", longFile);
-	fprintf(stdout, "Search for \"Rusconi's American Kitchen\":\n");
+	search = tree_search_name("Peking Chinese Restaurant", longFile);
+	fprintf(stdout, "Search for \"Peking Chinese Restaurant\":\n");
 	print_node(search);
 	fprintf(stdout, "\n");
 	if (search == NULL)
