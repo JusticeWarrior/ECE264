@@ -37,9 +37,7 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 	return root;
 }
 
-/*
-
-*/
+/*When provided with a string line, the function spits the line up into it's components and puts them into a node.*/
 static BusinessNode * read_node_line(char * line)
 {
 	const char s[2] = "\t";
@@ -74,17 +72,28 @@ BusinessNode * load_tree_from_file(char * filename)
 
 	fgets(line, 80, file);
 	if (feof(file))
+	{
+		fclose(file);
 		return NULL;
+	}
+		
 
 	BusinessNode * root = read_node_line(line);
+	if (root == NULL)
+	{
+		fclose(file);
+		return NULL;
+	}
 
 	fgets(line, 50, file);
 	while (!feof(file))
 	{
+		BusinessNode * newNode = read_node_line(line);
 		
 	}
 
-	return NULL;
+	fclose(file);
+	return root;
 }
 
 BusinessNode * tree_search_name(char * name, BusinessNode * root)
