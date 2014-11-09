@@ -22,7 +22,10 @@ int main(int argc, char * * argv)
 	print_tree(root);
 	fprintf(stdout, "\n\n");
 
-	destroy_tree(root);
+	free(root->left->right);
+	free(root->left);
+	free(root->right);
+	free(root);
 
 	BusinessNode * shortFile = load_tree_from_file("shortfile.tsv");
 	if (shortFile == NULL)
