@@ -139,7 +139,10 @@ void print_tree(BusinessNode * tree)
 void destroy_tree(BusinessNode * root)
 {
 	if (root == NULL)
+	{
+		free(root);
 		return;
+	}
 
 	destroy_tree(root->left);
 	destroy_tree(root->right);
