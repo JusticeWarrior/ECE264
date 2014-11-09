@@ -40,7 +40,18 @@ BusinessNode * load_tree_from_file(char * filename)
 
 BusinessNode * tree_search_name(char * name, BusinessNode * root)
 {
-	return NULL;
+	if (root == NULL)
+		return NULL; // BASE CASE
+
+	int comp = strcmp(name, root->name);
+	if (comp == 0)
+		return root; // WE FOUND THE NAME!
+	else if (comp < 0)
+		root = tree_search_name(name, root->left);
+	else
+		root = tree_search_name(name, root->right);
+
+	return root;
 }
 
 void print_node(BusinessNode * node)
