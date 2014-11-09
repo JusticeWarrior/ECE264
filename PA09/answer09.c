@@ -40,5 +40,14 @@ void print_tree(BusinessNode * tree)
 
 void destroy_tree(BusinessNode * root)
 {
+	if (root == NULL)
+		return;
 
+	destroy_tree(root->left);
+	destroy_tree(root->right);
+
+	free(root->stars);
+	free(root->name);
+	free(root->address);
+	free(root);
 }
