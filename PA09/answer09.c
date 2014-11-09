@@ -16,7 +16,21 @@ BusinessNode * create_node(char * stars, char * name, char * address)
 
 BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 {
-	return NULL;
+	if (root == NULL)
+	{
+		root = node;
+		return root;
+	}
+
+	int comp = strcmp(node->name, root->name);
+	if (comp == 0)
+		return root;
+	else if (comp < 0)
+		tree_insert(node, root->left);
+	else
+		tree_insert(node, root->right);
+	
+	return root;
 }
 
 BusinessNode * load_tree_from_file(char * filename)
