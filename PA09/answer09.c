@@ -4,6 +4,8 @@
 
 #include "answer09.h"
 
+static BusinessNode * read_node_line(char * line);
+
 BusinessNode * create_node(char * stars, char * name, char * address)
 {
 	BusinessNode * node = malloc(sizeof(BusinessNode));
@@ -35,6 +37,31 @@ BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
 	return root;
 }
 
+/*
+
+*/
+static BusinessNode * read_node_line(char * line)
+{
+	const char s[2] = "\t";
+	char * rating;
+	char * name;
+	char * address;
+
+	rating = strtok(line, s);
+	if (rating == NULL)
+		return NULL;
+
+	name = strtok(NULL, s);
+	if (name == NULL)
+		return NULL;
+
+	address = strtok(NULL, s);
+	if (address == NULL)
+		return NULL;
+
+	return create_node(rating, name, address);
+}
+
 BusinessNode * load_tree_from_file(char * filename)
 {
 	FILE * file = fopen(filename, "rt");
@@ -42,6 +69,16 @@ BusinessNode * load_tree_from_file(char * filename)
 	if (file == NULL)
 		return NULL;
 
+	
+	char line[80];
+
+	fgets(line, 80, file);
+	if (feof(file))
+		return NULL;
+
+	BusinessNode * root = read_node_line(line);
+
+	fgets(line, 50, file);
 	while (!feof(file))
 	{
 		
