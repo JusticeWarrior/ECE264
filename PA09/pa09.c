@@ -12,11 +12,15 @@ int main(int argc, char * * argv)
 	root->left->right = create_node("1.5", "name 3", "address 3");
 
 	BusinessNode * search = tree_search_name("another name", root);
+	fprintf(stdout, "Search for \"another name\":\n");
 	print_node(search);
+	fprintf(stdout, "\n");
 	if (search == NULL)
 		return EXIT_FAILURE;
 
+	fprintf(stdout, "First Tree:\n");
 	print_tree(root);
+	fprintf(stdout, "\n\n");
 
 	destroy_tree(root);
 
@@ -24,11 +28,15 @@ int main(int argc, char * * argv)
 
 	search = NULL;
 	search = tree_search_name("Culver's", root);
+	fprintf(stdout, "Search for \"Culver's\":\n");
 	print_node(search);
+	fprintf(stdout, "\n");
 	if (search == NULL)
 		return EXIT_FAILURE;
 
-	print_tree(root);
+	fprintf(stdout, "Second Tree:\n");
+	print_tree(shortFile);
+	fprintf(stdout, "\n\n");
 
 	destroy_tree(shortFile);
 
@@ -37,11 +45,15 @@ int main(int argc, char * * argv)
 
 	search = NULL;
 	search = tree_search_name("Rusconi's American Kitchen", root);
+	fprintf(stdout, "Search for \"Rusconi's American Kitchen\":\n");
 	print_node(search);
+	fprintf(stdout, "\n");
 	if (search == NULL)
 		return EXIT_FAILURE;
 
-	print_tree(root);
+	fprintf(stdout, "Third Tree:\n");
+	print_tree(longFile);
+	fprintf(stdout, "\n");
 
 	destroy_tree(longFile);
 

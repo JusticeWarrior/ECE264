@@ -31,6 +31,7 @@ BusinessNode * tree_search_name(char * name, BusinessNode * root)
 
 void print_node(BusinessNode * node)
 {
+	fprintf(stdout, "%s\t%s\t%s\n", node->stars, node->name, node->address);
 }
 
 void print_tree(BusinessNode * tree)
