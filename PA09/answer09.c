@@ -10,8 +10,10 @@ BusinessNode * create_node(char * stars, char * name, char * address)
 	node->stars = strdup(stars);
 	node->name = strdup(name);
 	node->address = strdup(address);
+	node->left = NULL;
+	node->right = NULL;
 
-	return NULL;
+	return node;
 }
 
 BusinessNode * tree_insert(BusinessNode * node, BusinessNode * root)
