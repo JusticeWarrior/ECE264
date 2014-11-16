@@ -154,3 +154,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# Huge Fucking files
+businesses.tsv
+reviews.tsv
