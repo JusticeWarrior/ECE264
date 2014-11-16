@@ -64,6 +64,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\answer10.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\answer10.c" />
+    <ClCompile Include="..\..\pa10.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
