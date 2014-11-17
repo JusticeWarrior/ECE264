@@ -22,21 +22,29 @@ typedef struct m_BusinessNode
 	int numReviews;
 } BusinessNode;
 
-static BusinessNode CreateBusinessNode(TempData data)
+static BusinessNode * CreateBusinessNode(TempData data)
 {
 	return NULL;
 }
+
+/* This struct will hold information about businesses before the other trees are built. */
+typedef struct m_LocalBusiness
+{
+	char * city;
+	char * address;
+	BusinessNode * reviews;
+} LocalBusiness;
 
 /* This tree will be built during a query. */
 typedef struct m_AddressTree
 {
 	char * address;
-	BusinessNode reviews;
+	BusinessNode * reviews;
 	struct m_AddressTree * left;
 	struct m_AddressTree * right;
 } AddressTree;
 
-static AddressTree * CreateAddressTree(TempData * data)
+static AddressTree * CreateAddressTree(LocalBusiness * data)
 {
 	AddressTree * tree = malloc(sizeof(AddressTree));
 	strcpy(tree->address, data->address);
@@ -66,13 +74,25 @@ typedef struct m_CityTree
 	struct m_CityTree * right;
 } CityTree;
 
-/* This struct will hold information about businesses before the other trees are built. */
-typedef struct m_LocalBusiness
+static CityTree * CreateCityTree(LocalBusiness * data)
 {
-	char * city;
-	char * address;
-	BusinessNode * reviews;
-} LocalBusiness;
+	CityTree * tree = malloc(sizeof(CityTree));
+	strcpy(tree->city, data->city);
+	tree->left = NULL;
+	tree->right = NULL;
+
+	return tree;
+}
+
+static void DeconstructCityTree(CityTree * tree)
+{
+	if (tree == NULL)
+		return;
+	DeconstructCityTree(tree->left);
+	DeconstructCityTree(tree->right);
+	free(tree->city);
+	free(tree);
+}
 
 /* This tree will be built during the create_business_bst() function. */
 typedef struct m_ZipCodesTree
@@ -82,6 +102,27 @@ typedef struct m_ZipCodesTree
 	struct m_ZipCodesTree * left;
 	struct m_ZipCodesTree * right;
 } ZipCodesTree;
+
+static ZipCodesTree * CreateZipCodeTree(TempData * data)
+{
+	ZipCodesTree * tree = malloc(sizeof(ZipCodesTree));
+	strcpy(tree->zipcode, data->zipCode);
+	//tree->localBusinesses = CreateLocalBusiness(TempData data);
+	tree->left = NULL;
+	tree->right = NULL;
+
+	return tree;
+}
+
+static void DeconstructZipCodeTree(ZipCodesTree * tree)
+{
+	if (tree == NULL)
+		return;
+	DeconstructZipCodeTree(tree->left);
+	DeconstructZipCodeTree(tree->right);
+	free(tree->zipcode);
+	free(tree);
+}
 
 /* This tree will be built during the create_business_bst() function. */
 typedef struct m_StatesTree
