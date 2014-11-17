@@ -22,6 +22,11 @@ typedef struct m_BusinessNode
 	int numReviews;
 } BusinessNode;
 
+static BusinessNode CreateBusinessNode(TempData data)
+{
+	return NULL;
+}
+
 /* This tree will be built during a query. */
 typedef struct m_AddressTree
 {
@@ -40,6 +45,16 @@ static AddressTree * CreateAddressTree(TempData * data)
 	tree->right = NULL;
 
 	return tree;
+}
+
+static void DeconstructAddressTree(AddressTree * tree)
+{
+	if (tree == NULL)
+		return;
+	DeconstructAddressTree(tree->left);
+	DeconstructAddressTree(tree->right);
+	free(tree->address);
+	free(tree);
 }
 
 /* This tree will be built during a query. */
