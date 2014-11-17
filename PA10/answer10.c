@@ -31,6 +31,17 @@ typedef struct m_AddressTree
 	struct m_AddressTree * right;
 } AddressTree;
 
+static AddressTree * CreateAddressTree(TempData * data)
+{
+	AddressTree * tree = malloc(sizeof(AddressTree));
+	strcpy(tree->address, data->address);
+	//tree->reviews = CreateBusinessNode(data)
+	tree->left = NULL;
+	tree->right = NULL;
+
+	return tree;
+}
+
 /* This tree will be built during a query. */
 typedef struct m_CityTree
 {
