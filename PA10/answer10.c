@@ -44,6 +44,7 @@ typedef struct m_LocalBusiness
 	char * city;
 	char * address;
 	BusinessNode * reviews;
+	struct m_LocalBusiness * next;
 } LocalBusiness;
 
 LocalBusiness * CreateLocalBusiness(TempData * data)
@@ -53,6 +54,7 @@ LocalBusiness * CreateLocalBusiness(TempData * data)
 	strcpy(localData->address, data->address);
 	strcpy(localData->city, data->city);
 	localData->reviews = CreateBusinessNode(data);
+	localData->next = NULL;
 
 	return localData;
 }
@@ -61,6 +63,7 @@ static void DeconstructLocalBusiness(LocalBusiness * localData)
 {
 	if (localData == NULL)
 		return;
+	DeconstructLocalBusiness(localData->next);
 	free(localData->address);
 	free(localData->city);
 	DeconstructBusinessNode(localData->reviews);
@@ -142,7 +145,7 @@ static ZipCodesTree * CreateZipCodeTree(TempData * data)
 {
 	ZipCodesTree * tree = malloc(sizeof(ZipCodesTree));
 	strcpy(tree->zipcode, data->zipCode);
-	//tree->localBusinesses = CreateLocalBusiness(TempData data);
+	tree->localBusinesses = CreateLocalBusiness(data);
 	tree->left = NULL;
 	tree->right = NULL;
 
@@ -155,6 +158,7 @@ static void DeconstructZipCodeTree(ZipCodesTree * tree)
 		return;
 	DeconstructZipCodeTree(tree->left);
 	DeconstructZipCodeTree(tree->right);
+	DeconstructLocalBusiness(tree->localBusinesses);
 	free(tree->zipcode);
 	free(tree);
 }
@@ -168,14 +172,59 @@ typedef struct m_StatesTree
 	struct m_StatesTree * right;
 } StatesTree;
 
+static StatesTree * CreateStatesTree(TempData * data)
+{
+	StatesTree * tree = malloc(sizeof(StatesTree));
+	strcpy(tree->state, data->state);
+	tree->zipCodeTree = CreateZipCodeTree(data);
+	tree->left = NULL;
+	tree->right = NULL;
+
+	return tree;
+}
+
+static void DeconstructStatesTree(StatesTree * tree)
+{
+	if (tree == NULL)
+		return;
+	DeconstructStatesTree(tree->left);
+	DeconstructStatesTree(tree->right);
+	DeconstructZipCodeTree (tree->zipCodeTree);
+	free(tree->state);
+	free(tree);
+}
+
 /* This tree will be built during the create_business_bst() function. */
-typedef struct m_YelpDataBST
+typedef struct YelpDataBST
 {
 	char * name;
 	StatesTree * stateTree;
-	struct m_YelpDataBST * left;
-	struct m_YelpDataBST * right;
-} YelpDataBST;
+	struct YelpDataBST * left;
+	struct YelpDataBST * right;
+} YelpDataTree;
+
+static YelpDataTree * CreateYelpDataTree(TempData * data)
+{
+	YelpDataTree * tree = malloc(sizeof(YelpDataTree));
+	strcpy(tree->name, data->name);
+	tree->stateTree = CreateStatesTree(data);
+	tree->left = NULL;
+	tree->right = NULL;
+
+	return tree;
+}
+
+void destroy_business_bst(struct YelpDataBST* bst)
+{
+	if (bst == NULL)
+		return;
+	destroy_business_bst(bst->left);
+	destroy_business_bst(bst->right);
+	DeconstructStatesTree(bst->stateTree);
+	free(bst->name);
+	free(bst);
+}
+
 
 struct YelpDataBST* create_business_bst(const char* businesses_path,
 	const char* reviews_path)
@@ -189,10 +238,7 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 	return NULL;
 }
 
-void destroy_business_bst(struct YelpDataBST* bst)
-{
 
-}
 
 void destroy_business_result(struct Business* b)
 {
