@@ -13,6 +13,8 @@ typedef struct m_TempData
 	char * city;
 	char * state;
 	char * zipCode;
+	long int reviews;
+	int numReviews;
 } TempData;
 
 /* This struct will hold the review information about a specific store */ 
@@ -22,9 +24,18 @@ typedef struct m_BusinessNode
 	int numReviews;
 } BusinessNode;
 
-static BusinessNode * CreateBusinessNode(TempData data)
+static BusinessNode * CreateBusinessNode(TempData * data)
 {
-	return NULL;
+	BusinessNode * node = malloc(sizeof(BusinessNode));
+	node->reviews = data->reviews;
+	node->numReviews = data->numReviews;
+
+	return node;
+}
+
+static void DeconstructBusinessNode(BusinessNode * node)
+{
+	free(node);
 }
 
 /* This struct will hold information about businesses before the other trees are built. */
@@ -34,6 +45,27 @@ typedef struct m_LocalBusiness
 	char * address;
 	BusinessNode * reviews;
 } LocalBusiness;
+
+LocalBusiness * CreateLocalBusiness(TempData * data)
+{
+	LocalBusiness * localData = malloc(sizeof(LocalBusiness));
+
+	strcpy(localData->address, data->address);
+	strcpy(localData->city, data->city);
+	localData->reviews = CreateBusinessNode(data);
+
+	return localData;
+}
+
+static void DeconstructLocalBusiness(LocalBusiness * localData)
+{
+	if (localData == NULL)
+		return;
+	free(localData->address);
+	free(localData->city);
+	DeconstructBusinessNode(localData->reviews);
+	free(localData);
+}
 
 /* This tree will be built during a query. */
 typedef struct m_AddressTree
@@ -48,7 +80,7 @@ static AddressTree * CreateAddressTree(LocalBusiness * data)
 {
 	AddressTree * tree = malloc(sizeof(AddressTree));
 	strcpy(tree->address, data->address);
-	//tree->reviews = CreateBusinessNode(data)
+	tree->reviews = data->reviews;
 	tree->left = NULL;
 	tree->right = NULL;
 
@@ -62,6 +94,7 @@ static void DeconstructAddressTree(AddressTree * tree)
 	DeconstructAddressTree(tree->left);
 	DeconstructAddressTree(tree->right);
 	free(tree->address);
+	DeconstructBusinessNode(tree->reviews);
 	free(tree);
 }
 
@@ -77,6 +110,7 @@ typedef struct m_CityTree
 static CityTree * CreateCityTree(LocalBusiness * data)
 {
 	CityTree * tree = malloc(sizeof(CityTree));
+	tree->addressTree = CreateAddressTree(data);
 	strcpy(tree->city, data->city);
 	tree->left = NULL;
 	tree->right = NULL;
@@ -90,6 +124,7 @@ static void DeconstructCityTree(CityTree * tree)
 		return;
 	DeconstructCityTree(tree->left);
 	DeconstructCityTree(tree->right);
+	DeconstructAddressTree(tree->addressTree);
 	free(tree->city);
 	free(tree);
 }
