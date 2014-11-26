@@ -39,6 +39,21 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 	free(tree);
 }
 
+BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
+	int (*compFunc)(long int nodeData, long int rootData))
+{
+	if (root == NULL)
+		return node;
+
+	int comp = compFunc(node->businessPointer, root->businessPointer);
+	if (comp <= 0)
+		root->left = BusinessTreeInsert(node, root->left, compFunc);
+	else //// NEED TO DESTROY DUPLICATE NAME NODE!!!!
+		sdfdsroot->right = BusinessTreeInsert(node, root->right, compFunc);
+
+	return root;
+}
+
 /* This tree will be built during the create_business_bst() function. */
 typedef struct YelpDataBST
 {
@@ -46,9 +61,10 @@ typedef struct YelpDataBST
 	struct YelpDataBST * right;
 
 	BusinessPointerTree * locations;
+	char * name;
 } YelpDataTree;
 
-static YelpDataTree * CreateYelpDataTree(long int businessPointer, long int reviewPointer, int numReviews)
+static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, long int reviewPointer, int numReviews)
 {
 	YelpDataTree * tree = malloc(sizeof(YelpDataTree));
 
@@ -56,6 +72,7 @@ static YelpDataTree * CreateYelpDataTree(long int businessPointer, long int revi
 	tree->right = NULL;
 
 	tree->locations = CreateBusinessTree(businessPointer, reviewPointer, numReviews);
+	tree->name = strdup(name);
 
 	return tree;
 }
@@ -69,8 +86,26 @@ void destroy_business_bst(struct YelpDataBST* bst)
 	destroy_business_bst(bst->right);
 
 	DeconstructBusinessTree(bst->locations);
+	free(bst->name);
+	free(bst);
 }
 
+
+YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
+{
+	if (root == NULL)
+		return node;
+
+	int comp = strcmp(node->name, root->name);
+	if (comp < 0)
+		root->left = YelpDataInsert(node, root->left);
+	else if (comp > 0)
+		root->right = YelpDataInsert(node, root->right);
+	else
+		BusinessTreeInsert(node->locations, root->locations, strcmp);
+
+	return root;
+}
 
 struct YelpDataBST* create_business_bst(const char* businesses_path,
 	const char* reviews_path)
