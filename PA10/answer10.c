@@ -39,17 +39,17 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 	free(tree);
 }
 
-BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
+static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
 	int (*compFunc)(long int nodeData, long int rootData))
 {
 	if (root == NULL)
 		return node;
-
-	int comp = compFunc(node->businessPointer, root->businessPointer);
+	// NEED TO ADD COMPFUNC!!
+	SDFSD int comp = compFunc(node->businessPointer, root->businessPointer);
 	if (comp <= 0)
 		root->left = BusinessTreeInsert(node, root->left, compFunc);
-	else //// NEED TO DESTROY DUPLICATE NAME NODE!!!!
-		sdfdsroot->right = BusinessTreeInsert(node, root->right, compFunc);
+	else
+		root->right = BusinessTreeInsert(node, root->right, compFunc);
 
 	return root;
 }
@@ -90,8 +90,16 @@ void destroy_business_bst(struct YelpDataBST* bst)
 	free(bst);
 }
 
+/* Destroys a single YelpDataTree node without destroying the locations tree or the right and left nodes. */
+static void DestroyYelpNode(YelpDataTree * node)
+{
+	if (node == NULL)
+		return;
 
-YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
+	free(node);
+}
+
+static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
 {
 	if (root == NULL)
 		return node;
@@ -102,7 +110,11 @@ YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
 	else if (comp > 0)
 		root->right = YelpDataInsert(node, root->right);
 	else
+	{
 		BusinessTreeInsert(node->locations, root->locations, strcmp);
+		DestroyYelpNode(node);
+	}
+		
 
 	return root;
 }
