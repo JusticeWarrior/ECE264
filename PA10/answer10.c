@@ -212,19 +212,35 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 
 	YelpDataTree * root = CreateYelpDataTree(name, busPos, revPos);
 
+	fgets(revLine, 200, revFp);
+	revId = strtok(revLine, s);
+	revPos = revNextPos;
+	revNextPos = ftell(revFp);
+
 	while (!feof(busFp))
 	{
-		
+		while (!strcmp(busId, revId)) // As long as the bus id and review id are the same
+		{
+			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos);
+			YelpDataInsert(node, root, busFp, revFp);
+
+			fgets(revLine, 200, revFp);
+			revId = strtok(revLine, s);
+			revPos = revNextPos;
+			revNextPos = ftell(revFp);
+		}
 
 		fgets(busLine, 200, busFp);
 		busId = strtok(busLine, s);
 		name = strtok(NULL, s);
-
-		fgets(revLine, 200, revFp);
-		revId = strtok(revLine, s);
+		busPos = busNextPos;
+		busNextPos = ftell(busFp);
 	}
 
-	return NULL;
+	fclose(busFp);
+	fclose(revFp);
+
+	return root;
 }
 
 struct Business* get_business_reviews(struct YelpDataBST* bst,
