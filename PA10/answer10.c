@@ -39,19 +39,23 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 	free(tree);
 }
 
-
+/* Sorts data according to State -> City -> Address. Assumes that a file has already been opened.*/
+static int businessComp(long int nodeData, long int rootData, FILE fp)
+{
+	return 0;
+}
 
 static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
-	int (*compFunc)(long int nodeData, long int rootData))
+	int (*compFunc)(long int nodeData, long int rootData, FILE fp), FILE fp)
 {
 	if (root == NULL)
 		return node;
 	// NEED TO ADD COMPFUNC!!
-	SDFSD int comp = compFunc(node->businessPointer, root->businessPointer);
+	int comp = compFunc(node->businessPointer, root->businessPointer, fp);
 	if (comp <= 0)
-		root->left = BusinessTreeInsert(node, root->left, compFunc);
+		root->left = BusinessTreeInsert(node, root->left, compFunc, fp);
 	else
-		root->right = BusinessTreeInsert(node, root->right, compFunc);
+		root->right = BusinessTreeInsert(node, root->right, compFunc, fp);
 
 	return root;
 }
@@ -101,19 +105,20 @@ static void DestroyYelpNode(YelpDataTree * node)
 	free(node);
 }
 
-static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
+static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, FILE fp)
 {
 	if (root == NULL)
 		return node;
 
-	int comp = cmpstri(node->name, root->name);
+	// Sort names according to non case sensitive data
+	int comp = stricmp(node->name, root->name);
 	if (comp < 0)
-		root->left = YelpDataInsert(node, root->left);
+		root->left = YelpDataInsert(node, root->left, fp);
 	else if (comp > 0)
-		root->right = YelpDataInsert(node, root->right);
+		root->right = YelpDataInsert(node, root->right, fp);
 	else
 	{
-		BusinessTreeInsert(node->locations, root->locations, hjhcmpstri);
+		BusinessTreeInsert(node->locations, root->locations, businessComp, fp);
 		DestroyYelpNode(node);
 	}
 		
