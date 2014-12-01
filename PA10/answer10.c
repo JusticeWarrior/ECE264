@@ -243,16 +243,37 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	return root;
 }
 
+static struct Location * NullStateSearch(YelpDataTree * root, char * zip_code)
+{
+
+}
+
+static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
+{
+	if (root == NULL)
+		return NULL; // BASE CASE
+
+	int comp = stricmp(name, root->name);
+	if (comp == 0)
+		return root; // WE FOUND THE NAME!
+	else if (comp < 0)
+		root = NodeSearch(name, root->left);
+	else
+		root = NodeSearch(name, root->right);
+
+	return root;
+}
+
 struct Business* get_business_reviews(struct YelpDataBST* bst,
 	char* name, char* state, char* zip_code)
 {
 	struct Business * business = malloc(sizeof(struct Business));
 	business->name = strdup(name);
 
+	YelpDataTree * tree = NodeSearch(name, bst);
+
 	return NULL;
 }
-
-
 
 void destroy_business_result(struct Business* b)
 {
