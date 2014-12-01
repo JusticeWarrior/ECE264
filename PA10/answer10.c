@@ -250,14 +250,9 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	return root;
 }
 
-static struct Location * NullStateSearch(BusinessPointerTree * root, char * zip_code)
-{
-	struct Location * location = malloc(sizeof(struct Location));
-	//int * count
 
-}
 
-static struct Location * TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * prevState,
+static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * prevState,
 	char * prevCity, char * prevAddress, char * prevZip, char * zip_code, char * State, FILE * busFp, FILE * revFp)
 {
 	const char s[2] = "\t";
@@ -319,12 +314,20 @@ static struct Location * TraverseInOrder(struct Business * b, BusinessPointerTre
 			}
 			else
 			{
-				b->locations = realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+				if (b->num_locations == 0)
+				{
+					b->locations = malloc(sizeof(struct Location));
+				}
+				else
+				{
+					b->locations = realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+				}
 				b->locations[b->num_locations - 1].address = strdup(address);
 				b->locations[b->num_locations - 1].city = strdup(city);
 				b->locations[b->num_locations - 1].state = strdup(state);
 				b->locations[b->num_locations - 1].zip_code = strdup(zipcode);
 				b->locations[b->num_locations - 1].num_reviews++;
+
 				b->locations[b->num_locations - 1].reviews = malloc(sizeof(struct Review));
 
 				char * stars;
@@ -364,6 +367,16 @@ static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
 		root = NodeSearch(name, root->right);
 
 	return root;
+}
+
+static void StateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, char * state, FILE * busFp, FILE * revFp)
+{
+	TraverseInOrder(b, NodeSearch(name, root)->locations, NULL, NULL, NULL, NULL, zipcode, state, busFp, revFp);
+}
+
+static void NullStateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, FILE * busFp, FILE * revFp)
+{
+	TraverseInOrder(b, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
 }
 
 struct Business* get_business_reviews(struct YelpDataBST* bst,
