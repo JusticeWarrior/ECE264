@@ -125,15 +125,20 @@ typedef struct YelpDataBST
 
 	BusinessPointerTree * locations;
 	char * name;
+	char * businessPath;
+	char * reviewPath;
 } YelpDataTree;
 
-static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, long int reviewPointer)
+static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, long int reviewPointer,
+	const char * businessPath, const char * reviewPath)
 {
 	YelpDataTree * tree = malloc(sizeof(YelpDataTree));
 
 	tree->left = NULL;
 	tree->right = NULL;
 
+	tree->businessPath = strdup(businessPath);
+	tree->reviewPath = strdup(reviewPath);
 	tree->locations = CreateBusinessTree(businessPointer, reviewPointer);
 	tree->name = strdup(name);
 
@@ -150,6 +155,8 @@ void destroy_business_bst(struct YelpDataBST* bst)
 
 	DeconstructBusinessTree(bst->locations);
 	free(bst->name);
+	free(bst->businessPath);
+	free(bst->reviewPath);
 	free(bst);
 }
 
@@ -210,7 +217,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	long int busNextPos = ftell(busFp);
 	long int revNextPos = ftell(revFp);
 
-	YelpDataTree * root = CreateYelpDataTree(name, busPos, revPos);
+	YelpDataTree * root = CreateYelpDataTree(name, busPos, revPos, businesses_path, reviews_path);
 
 	fgets(revLine, 200, revFp);
 	revId = strtok(revLine, s);
@@ -221,7 +228,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	{
 		while (!strcmp(busId, revId)) // As long as the bus id and review id are the same
 		{
-			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos);
+			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos, NULL, NULL);
 			YelpDataInsert(node, root, busFp, revFp);
 
 			fgets(revLine, 200, revFp);
@@ -243,9 +250,20 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	return root;
 }
 
-static struct Location * NullStateSearch(YelpDataTree * root, char * zip_code)
+static struct Location * NullStateSearch(BusinessPointerTree * root, char * zip_code)
 {
+	struct Location * location = malloc(sizeof(struct Location));
+	
 
+}
+
+static struct Location * TraverseInOrder(BusinessPointerTree * root, char * zip_code)
+{
+	TraverseInOrder(root->left, zip_code);
+
+	
+
+	TraverseInOrder(root->right, zip_code);
 }
 
 static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
