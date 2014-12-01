@@ -40,13 +40,17 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 }
 
 /* Sorts data according to State -> City -> Address. Assumes that a file has already been opened.*/
-static int businessComp(long int nodeData, long int rootData, FILE fp)
+static int businessComp(long int nodeData, long int rootData, FILE * fp)
 {
+	fseek(fp, nodeData, SEEK_SET);
+
+
+
 	return 0;
 }
 
 static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
-	int (*compFunc)(long int nodeData, long int rootData, FILE fp), FILE fp)
+	int (*compFunc)(long int nodeData, long int rootData, FILE * fp), FILE * fp)
 {
 	if (root == NULL)
 		return node;
@@ -105,7 +109,7 @@ static void DestroyYelpNode(YelpDataTree * node)
 	free(node);
 }
 
-static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, FILE fp)
+static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, FILE * fp)
 {
 	if (root == NULL)
 		return node;
