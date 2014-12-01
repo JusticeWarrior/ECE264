@@ -186,6 +186,26 @@ static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, F
 struct YelpDataBST* create_business_bst(const char* businesses_path,
 	const char* reviews_path)
 {
+	const char s[2] = "\t";
+
+	FILE * busFp = fopen(businesses_path, "r");
+	FILE * revFp = fopen(reviews_path, "r");
+
+	char busLine[200];
+	char * busId;
+	char * name;
+	char revLine[200];
+	char * revId;
+	
+	fgets(busLine, 200, busFp);
+	busId = strtok(busLine, s);
+	name = strtok(NULL, s);
+
+	fgets(revLine, 200, revFp);
+	revId = strtok(revLine, s);
+
+	YelpDataTree * root = CreateYelpDataTree(name, 0, 0);
+
 	return NULL;
 }
 
