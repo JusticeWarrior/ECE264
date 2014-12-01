@@ -4,7 +4,7 @@
 #include <string.h>
 #include "answer10.h"
 
-/* This tree will be organized by state -> city -> address and will hold business.tsv pointers and reviews.tsv pointers. */
+/* This tree will be organized by state -> city -> address -> decending review stars and will hold business.tsv pointers and reviews.tsv pointers. */
 typedef struct m_BusinessPointerTree
 {
 	struct m_BusinessPointerTree * left;
@@ -12,10 +12,9 @@ typedef struct m_BusinessPointerTree
 
 	long int businessPointer;
 	long int reviewPointer;
-	int numReviews;
 } BusinessPointerTree;
 
-static BusinessPointerTree * CreateBusinessTree(long int businessPointer, long int reviewPointer, int numReviews)
+static BusinessPointerTree * CreateBusinessTree(long int businessPointer, long int reviewPointer)
 {
 	BusinessPointerTree * tree = malloc(sizeof(BusinessPointerTree));
 
@@ -24,7 +23,6 @@ static BusinessPointerTree * CreateBusinessTree(long int businessPointer, long i
 
 	tree->businessPointer = businessPointer;
 	tree->reviewPointer = reviewPointer;
-	tree->numReviews = numReviews;
 
 	return tree;
 }
@@ -39,8 +37,8 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 	free(tree);
 }
 
-/* Sorts data according to State -> City -> Address. Assumes that a file has already been opened.*/
-static int businessComp(long int nodeData, long int rootData, FILE * fp)
+/* Sorts data according to State -> City -> Address -> Decending Review Stars. Assumes that files have already been opened.*/
+static int businessComp(long int nodeData, long int rootData, long int nodeRev, long int rootRev, FILE * busFp, FILE * revFp)
 {
 	const char s[2] = "\t";
 
@@ -48,9 +46,9 @@ static int businessComp(long int nodeData, long int rootData, FILE * fp)
 	char * nodeCity;
 	char * nodeState;
 
-	fseek(fp, nodeData, SEEK_SET);
+	fseek(busFp, nodeData, SEEK_SET);
 	char line[500];
-	fgets(line, 500, fp);
+	fgets(line, 500, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -63,9 +61,9 @@ static int businessComp(long int nodeData, long int rootData, FILE * fp)
 	char * rootCity;
 	char * rootState;
 
-	fseek(fp, rootData, SEEK_SET);
+	fseek(busFp, rootData, SEEK_SET);
 
-	fgets(line, 500, fp);
+	fgets(line, 500, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -80,7 +78,22 @@ static int businessComp(long int nodeData, long int rootData, FILE * fp)
 		int cityCmp = stricmp(nodeCity, rootCity);
 		if (cityCmp == 0)
 		{
-			return stricmp(nodeAddress, rootAddress);
+			int addressCmp = stricmp(nodeAddress, rootAddress);
+			if (addressCmp == 0)
+			{
+				fseek(revFp, nodeRev, SEEK_SET);
+				char * nodeRev;
+				strtok(line, s);
+				nodeRev = strtok(NULL, s);
+
+				fseek(revFp, rootRev, SEEK_SET);
+				char * rootRev;
+				strtok(line, s);
+				rootRev = strtok(NULL, s);
+
+				return atoi(nodeRev) - atoi(rootRev);
+			}
+			return addressCmp;
 		}
 		return cityCmp;
 	}
@@ -89,19 +102,17 @@ static int businessComp(long int nodeData, long int rootData, FILE * fp)
 }
 
 static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
-	int (*compFunc)(long int nodeData, long int rootData, FILE * fp), FILE * fp)
+	int(*compFunc)(long int nodeData, long int rootData, long int nodeRev, long int rootRev, FILE * busFp, FILE * revFp), FILE * busFp, FILE * revFp)
 {
 	if (root == NULL)
 		return node;
-	int comp = compFunc(node->businessPointer, root->businessPointer, fp);
+	int comp = compFunc(node->businessPointer, root->businessPointer, node->reviewPointer, root->reviewPointer, busFp, revFp);
 	if (comp < 0)
-		root->left = BusinessTreeInsert(node, root->left, compFunc, fp);
+		root->left = BusinessTreeInsert(node, root->left, compFunc, busFp, revFp);
 	else if (comp > 0)
-		root->right = BusinessTreeInsert(node, root->right, compFunc, fp);
+		root->right = BusinessTreeInsert(node, root->right, compFunc, busFp, revFp);
 	else
-	{
-		// DEAL WITH REVIEWS OF THE SAME LOCATION!
-	}
+		return root; // Throw out duplicates (although there shouldn't be any)
 
 	return root;
 }
@@ -116,14 +127,14 @@ typedef struct YelpDataBST
 	char * name;
 } YelpDataTree;
 
-static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, long int reviewPointer, int numReviews)
+static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, long int reviewPointer)
 {
 	YelpDataTree * tree = malloc(sizeof(YelpDataTree));
 
 	tree->left = NULL;
 	tree->right = NULL;
 
-	tree->locations = CreateBusinessTree(businessPointer, reviewPointer, numReviews);
+	tree->locations = CreateBusinessTree(businessPointer, reviewPointer);
 	tree->name = strdup(name);
 
 	return tree;
@@ -151,7 +162,7 @@ static void DestroyYelpNode(YelpDataTree * node)
 	free(node);
 }
 
-static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, FILE * fp)
+static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, FILE * busFp, FILE * revFp)
 {
 	if (root == NULL)
 		return node;
@@ -159,12 +170,12 @@ static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, F
 	// Sort names according to non case sensitive data
 	int comp = stricmp(node->name, root->name);
 	if (comp < 0)
-		root->left = YelpDataInsert(node, root->left, fp);
+		root->left = YelpDataInsert(node, root->left, busFp, revFp);
 	else if (comp > 0)
-		root->right = YelpDataInsert(node, root->right, fp);
+		root->right = YelpDataInsert(node, root->right, busFp, revFp);
 	else
 	{
-		BusinessTreeInsert(node->locations, root->locations, businessComp, fp);
+		BusinessTreeInsert(node->locations, root->locations, businessComp, busFp, revFp);
 		DestroyYelpNode(node);
 	}
 		
