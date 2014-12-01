@@ -295,14 +295,31 @@ static struct Location * TraverseInOrder(struct Business * b, BusinessPointerTre
 						if (!stricmp(address, prevAddress) || prevAddress == NULL)
 						{
 							// Same as last node ---> Can combine them!
-							
+							b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
+
+							char * stars;
+							char * review;
+							fseek(revFp, root->reviewPointer, SEEK_SET);
+							char line[500];
+							fgets(line, 500, revFp);
+
+							strtok(line, s);
+
+							stars = strtok(NULL, s);
+							strtok(NULL, s);
+							strtok(NULL, s);
+							strtok(NULL, s);
+							review = strtok(NULL, s);
+
+							b->locations[b->num_locations - 1].reviews[0].stars = atoi(stars);
+							b->locations[b->num_locations - 1].reviews[0].text = strdup(review);
 						}
 					}
 				}
 			}
 			else
 			{
-				realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+				b->locations = realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
 				b->locations[b->num_locations - 1].address = strdup(address);
 				b->locations[b->num_locations - 1].city = strdup(city);
 				b->locations[b->num_locations - 1].state = strdup(state);
