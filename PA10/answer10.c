@@ -295,10 +295,21 @@ static struct Location * TraverseInOrder(struct Business * b, BusinessPointerTre
 						if (!stricmp(address, prevAddress) || prevAddress == NULL)
 						{
 							// Same as last node ---> Can combine them!
-							realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+							
 						}
 					}
 				}
+			}
+			else
+			{
+				realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+				strdup(b->locations[b->num_locations - 1].address);
+				strdup(b->locations[b->num_locations - 1].city);
+				strdup(b->locations[b->num_locations - 1].state);
+				strdup(b->locations[b->num_locations - 1].zip_code);
+				b->locations[b->num_locations - 1].num_reviews++;
+				b->locations[b->num_locations - 1].reviews = malloc(sizeof(struct Review));
+				//b->locations[b->num_locations - 1].reviews[0].
 			}
 		}
 	}
