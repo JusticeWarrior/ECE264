@@ -197,6 +197,9 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	char revLine[200];
 	char * revId;
 	
+	long int busPos = 0;
+	long int revPos = 0;
+
 	fgets(busLine, 200, busFp);
 	busId = strtok(busLine, s);
 	name = strtok(NULL, s);
@@ -204,7 +207,22 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	fgets(revLine, 200, revFp);
 	revId = strtok(revLine, s);
 
-	YelpDataTree * root = CreateYelpDataTree(name, 0, 0);
+	long int busNextPos = ftell(busFp);
+	long int revNextPos = ftell(revFp);
+
+	YelpDataTree * root = CreateYelpDataTree(name, busPos, revPos);
+
+	while (!feof(busFp))
+	{
+		
+
+		fgets(busLine, 200, busFp);
+		busId = strtok(busLine, s);
+		name = strtok(NULL, s);
+
+		fgets(revLine, 200, revFp);
+		revId = strtok(revLine, s);
+	}
 
 	return NULL;
 }
