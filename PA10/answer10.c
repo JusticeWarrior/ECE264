@@ -246,6 +246,8 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 struct Business* get_business_reviews(struct YelpDataBST* bst,
 	char* name, char* state, char* zip_code)
 {
+	struct Business * business = malloc(sizeof(struct Business));
+
 	return NULL;
 }
 
