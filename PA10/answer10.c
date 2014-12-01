@@ -39,6 +39,8 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 	free(tree);
 }
 
+
+
 static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
 	int (*compFunc)(long int nodeData, long int rootData))
 {
@@ -104,14 +106,14 @@ static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root)
 	if (root == NULL)
 		return node;
 
-	int comp = strcmp(node->name, root->name);
+	int comp = cmpstri(node->name, root->name);
 	if (comp < 0)
 		root->left = YelpDataInsert(node, root->left);
 	else if (comp > 0)
 		root->right = YelpDataInsert(node, root->right);
 	else
 	{
-		BusinessTreeInsert(node->locations, root->locations, strcmp);
+		BusinessTreeInsert(node->locations, root->locations, hjhcmpstri);
 		DestroyYelpNode(node);
 	}
 		
