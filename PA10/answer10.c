@@ -247,6 +247,7 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 	char* name, char* state, char* zip_code)
 {
 	struct Business * business = malloc(sizeof(struct Business));
+	business->name = strdup(name);
 
 	return NULL;
 }
@@ -255,5 +256,23 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 
 void destroy_business_result(struct Business* b)
 {
+	free(b->name);
 
+	int i;
+	for (i = 0; i < (int)b->num_locations; i++)
+	{
+		free(b->locations[i].address);
+		free(b->locations[i].city);
+		free(b->locations[i].state);
+		free(b->locations[i].zip_code);
+
+		int j;
+		for (j = 0; j < (int)b->locations[i].num_reviews; j++)
+		{
+			free(b->locations[i].reviews[j].text);
+		}
+		free(b->locations[i].reviews);
+	}
+	free(b->locations);
+	free(b);
 }
