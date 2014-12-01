@@ -42,11 +42,50 @@ static void DeconstructBusinessTree(BusinessPointerTree * tree)
 /* Sorts data according to State -> City -> Address. Assumes that a file has already been opened.*/
 static int businessComp(long int nodeData, long int rootData, FILE * fp)
 {
+	const char s[2] = "\t";
+
+	char * nodeAddress;
+	char * nodeCity;
+	char * nodeState;
+
 	fseek(fp, nodeData, SEEK_SET);
+	char line[500];
+	fgets(line, 500, fp);
 
+	strtok(line, s);
+	strtok(NULL, s);
 
+	nodeAddress = strtok(NULL, s);
+	nodeCity = strtok(NULL, s);
+	nodeState = strtok(NULL, s);
 
-	return 0;
+	char * rootAddress;
+	char * rootCity;
+	char * rootState;
+
+	fseek(fp, rootData, SEEK_SET);
+
+	fgets(line, 500, fp);
+
+	strtok(line, s);
+	strtok(NULL, s);
+
+	rootAddress = strtok(NULL, s);
+	rootCity = strtok(NULL, s);
+	rootState = strtok(NULL, s);
+
+	int stateCmp = stricmp(nodeState, rootState);
+	if (stateCmp == 0)
+	{
+		int cityCmp = stricmp(nodeCity, rootCity);
+		if (cityCmp == 0)
+		{
+			return stricmp(nodeAddress, rootAddress);
+		}
+		return cityCmp;
+	}
+
+	return stateCmp;
 }
 
 static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, BusinessPointerTree * root,
@@ -54,12 +93,15 @@ static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, Busi
 {
 	if (root == NULL)
 		return node;
-	// NEED TO ADD COMPFUNC!!
 	int comp = compFunc(node->businessPointer, root->businessPointer, fp);
-	if (comp <= 0)
+	if (comp < 0)
 		root->left = BusinessTreeInsert(node, root->left, compFunc, fp);
-	else
+	else if (comp > 0)
 		root->right = BusinessTreeInsert(node, root->right, compFunc, fp);
+	else
+	{
+		// DEAL WITH REVIEWS OF THE SAME LOCATION!
+	}
 
 	return root;
 }
