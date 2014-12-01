@@ -257,8 +257,8 @@ static struct Location * NullStateSearch(BusinessPointerTree * root, char * zip_
 
 }
 
-static struct Location * TraverseInOrder(BusinessPointerTree * root, char * prevState, char * prevCity, char * prevAddress, char * prevZip,
-	char * zip_code, char * State, FILE * busFp, FILE * revFp)
+static struct Location * TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * prevState,
+	char * prevCity, char * prevAddress, char * prevZip, char * zip_code, char * State, FILE * busFp, FILE * revFp)
 {
 	const char s[2] = "\t";
 
@@ -279,7 +279,7 @@ static struct Location * TraverseInOrder(BusinessPointerTree * root, char * prev
 	state = strtok(NULL, s);
 	zipcode = strtok(NULL, s);
 
-	TraverseInOrder(root->right, state, city, address, zipcode, zip_code, State, busFp, revFp);
+	TraverseInOrder(b, root->right, state, city, address, zipcode, zip_code, State, busFp, revFp);
 
 	if (!stricmp(zipcode, zip_code) || zip_code == NULL)
 	{
@@ -295,6 +295,7 @@ static struct Location * TraverseInOrder(BusinessPointerTree * root, char * prev
 						if (!stricmp(address, prevAddress) || prevAddress == NULL)
 						{
 							// Same as last node ---> Can combine them!
+							realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
 						}
 					}
 				}
@@ -302,7 +303,7 @@ static struct Location * TraverseInOrder(BusinessPointerTree * root, char * prev
 		}
 	}
 
-	TraverseInOrder(root->left, state, city, address, zipcode, zip_code, State, busFp, revFp);
+	TraverseInOrder(b, root->left, state, city, address, zipcode, zip_code, State, busFp, revFp);
 }
 
 static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
@@ -329,6 +330,7 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 
 	struct Business * business = malloc(sizeof(struct Business));
 	business->name = strdup(name);
+	business->num_locations = 0;
 
 	YelpDataTree * tree = NodeSearch(name, bst);
 
