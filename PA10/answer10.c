@@ -253,17 +253,56 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 static struct Location * NullStateSearch(BusinessPointerTree * root, char * zip_code)
 {
 	struct Location * location = malloc(sizeof(struct Location));
-	
+	//int * count
 
 }
 
-static struct Location * TraverseInOrder(BusinessPointerTree * root, char * zip_code)
+static struct Location * TraverseInOrder(BusinessPointerTree * root, char * prevState, char * prevCity, char * prevAddress, char * prevZip,
+	char * zip_code, char * State, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(root->left, zip_code);
+	const char s[2] = "\t";
 
-	
+	char * address;
+	char * city;
+	char * state;
+	char * zipcode;
 
-	TraverseInOrder(root->right, zip_code);
+	fseek(busFp, root->businessPointer, SEEK_SET);
+	char line[500];
+	fgets(line, 500, busFp);
+
+	strtok(line, s);
+	strtok(NULL, s);
+
+	address = strtok(NULL, s);
+	city = strtok(NULL, s);
+	state = strtok(NULL, s);
+	zipcode = strtok(NULL, s);
+
+	TraverseInOrder(root->right, state, city, address, zipcode, zip_code, State, busFp, revFp);
+
+	if (!stricmp(zipcode, zip_code) || zip_code == NULL)
+	{
+		if (!stricmp(state, State) || State == NULL)
+		{
+			// Matches criteria
+			if (!stricmp(zipcode, prevZip) || prevZip == NULL)
+			{
+				if (!stricmp(state, prevState) || prevState == NULL)
+				{
+					if (!stricmp(city, prevCity) || prevCity == NULL)
+					{
+						if (!stricmp(address, prevAddress) || prevAddress == NULL)
+						{
+							// Same as last node ---> Can combine them!
+						}
+					}
+				}
+			}
+		}
+	}
+
+	TraverseInOrder(root->left, state, city, address, zipcode, zip_code, State, busFp, revFp);
 }
 
 static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
@@ -285,12 +324,20 @@ static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
 struct Business* get_business_reviews(struct YelpDataBST* bst,
 	char* name, char* state, char* zip_code)
 {
+	FILE * busFp = fopen(bst->businessPath, "r");
+	FILE * revFp = fopen(bst->reviewPath, "r");
+
 	struct Business * business = malloc(sizeof(struct Business));
 	business->name = strdup(name);
 
 	YelpDataTree * tree = NodeSearch(name, bst);
 
-	return NULL;
+
+
+	fclose(busFp);
+	fclose(revFp);
+
+	return business;
 }
 
 void destroy_business_result(struct Business* b)
