@@ -258,8 +258,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 
 
 
-static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * prevState,
-	char * prevCity, char * prevAddress, char * prevZip, char * zip_code, char * State, FILE * busFp, FILE * revFp)
+static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * zip_code, char * State, FILE * busFp, FILE * revFp)
 {
 	if (root == NULL)
 		return; // BASE CASE
@@ -272,8 +271,8 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 	char * zipcode;
 
 	fseek(busFp, root->businessPointer, SEEK_SET);
-	char line[500];
-	fgets(line, 500, busFp);
+	char line[6000];
+	fgets(line, 259, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -283,20 +282,20 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 	state = strtok(NULL, s);
 	zipcode = strtok(NULL, s);
 
-	TraverseInOrder(b, root->right, state, city, address, zipcode, zip_code, State, busFp, revFp);
+	TraverseInOrder(b, root->right, zip_code, State, busFp, revFp);
 
 	if (zip_code == NULL || !stricmp(zipcode, zip_code))
 	{
 		if (State == NULL || !stricmp(state, State))
 		{
 			// Matches criteria
-			if (prevZip == NULL || !stricmp(zipcode, prevZip))
+			if (b->locations[b->num_locations - 1].zip_code != NULL || !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
 			{
-				if (prevState == NULL || !stricmp(state, prevState))
+				if (b->locations[b->num_locations - 1].state != NULL || !stricmp(state, b->locations[b->num_locations - 1].state))
 				{
-					if (prevCity == NULL || !stricmp(city, prevCity))
+					if (b->locations[b->num_locations - 1].city != NULL || !stricmp(city, b->locations[b->num_locations - 1].city))
 					{
-						if (prevAddress == NULL || !stricmp(address, prevAddress))
+						if (b->locations[b->num_locations - 1].address != NULL || !stricmp(address, b->locations[b->num_locations - 1].address))
 						{
 							// Same as last node ---> Can combine them!
 							b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
@@ -304,8 +303,8 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 							char * stars;
 							char * review;
 							fseek(revFp, root->reviewPointer, SEEK_SET);
-							char line[500];
-							fgets(line, 500, revFp);
+							char line[6000];
+							fgets(line, 6000, revFp);
 
 							strtok(line, s);
 
@@ -342,8 +341,8 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 				char * stars;
 				char * review;
 				fseek(revFp, root->reviewPointer, SEEK_SET);
-				char line[500];
-				fgets(line, 500, revFp);
+				// char line[6000] has already been allocated at the beginning of the function!
+				fgets(line, 6000, revFp);
 
 				strtok(line, s);
 
@@ -355,11 +354,12 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 
 				b->locations[b->num_locations - 1].reviews[0].stars = atoi(stars);
 				b->locations[b->num_locations - 1].reviews[0].text = strdup(review);
+				b->num_locations++;
 			}
 		}
 	}
 
-	TraverseInOrder(b, root->left, state, city, address, zipcode, zip_code, State, busFp, revFp);
+	TraverseInOrder(b, root->left, zip_code, State, busFp, revFp);
 }
 
 static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
@@ -413,12 +413,12 @@ static BusinessPointerTree * NodeStateSearch(char * State, BusinessPointerTree *
 
 static void StateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, char * state, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(b, NodeStateSearch(state, root->locations, busFp), NULL, NULL, NULL, NULL, zipcode, state, busFp, revFp);
+	TraverseInOrder(b, NodeStateSearch(state, root->locations, busFp), zipcode, state, busFp, revFp);
 }
 
 static void NullStateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(b, root->locations, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
+	TraverseInOrder(b, root->locations, zipcode, NULL, busFp, revFp);
 }
 
 struct Business* get_business_reviews(struct YelpDataBST* bst,
