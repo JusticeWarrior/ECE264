@@ -73,27 +73,41 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 	rootState = strtok(NULL, s);
 
 	int stateCmp = stricmp(nodeState, rootState);
-	if (stateCmp == 0)
+	if (!stateCmp)
 	{
 		int cityCmp = stricmp(nodeCity, rootCity);
-		if (cityCmp == 0)
+		if (!cityCmp)
 		{
 			int addressCmp = stricmp(nodeAddress, rootAddress);
-			if (addressCmp == 0)
+			if (!addressCmp)
 			{
 				fseek(revFp, nodeRev, SEEK_SET);
 				fgets(line, 6000, revFp);
 				char * nodeStars;
+				char * nodeText;
 				strtok(line, s);
 				nodeStars = strtok(NULL, s);
+				strtok(NULL, s);
+				strtok(NULL, s);
+				strtok(NULL, s);
+				nodeText = strtok(NULL, s);
 
 				fseek(revFp, rootRev, SEEK_SET);
 				fgets(line, 6000, revFp);
 				char * rootStars;
+				char * rootText;
 				strtok(line, s);
 				rootStars = strtok(NULL, s);
+				strtok(NULL, s);
+				strtok(NULL, s);
+				strtok(NULL, s);
+				rootText = strtok(NULL, s);
 
-				return atoi(nodeStars) - atoi(rootStars);
+				int starsCmp = atoi(nodeStars) - atoi(rootStars);
+				if (!starsCmp)
+				{
+					return strcmp(nodeText, rootText);
+				}
 			}
 			return addressCmp;
 		}
@@ -300,7 +314,7 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 							if (b->locations[b->num_locations - 1].address != NULL || !stricmp(address, b->locations[b->num_locations - 1].address))
 							{
 								// Same as last node ---> Can combine them!
-								b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
+								b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * (b->locations[b->num_locations - 1].num_reviews + 1));
 
 								char * stars;
 								char * review;
@@ -331,7 +345,7 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 				}
 				else
 				{
-					b->locations = realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
+					b->locations = realloc(b->locations, sizeof(struct Location) * (b->num_locations + 1));
 				}
 				b->num_locations++;
 				b->locations[b->num_locations - 1].address = strdup(address);
