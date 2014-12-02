@@ -47,8 +47,8 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 	char * nodeState;
 
 	fseek(busFp, nodeData, SEEK_SET);
-	char line[500];
-	fgets(line, 500, busFp);
+	char line[6000];
+	fgets(line, 259, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -63,7 +63,7 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 
 	fseek(busFp, rootData, SEEK_SET);
 
-	fgets(line, 500, busFp);
+	fgets(line, 259, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -82,16 +82,18 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 			if (addressCmp == 0)
 			{
 				fseek(revFp, nodeRev, SEEK_SET);
-				char * nodeRev;
+				fgets(line, 6000, revFp);
+				char * nodeStars;
 				strtok(line, s);
-				nodeRev = strtok(NULL, s);
+				nodeStars = strtok(NULL, s);
 
 				fseek(revFp, rootRev, SEEK_SET);
-				char * rootRev;
+				fgets(line, 6000, revFp);
+				char * rootStars;
 				strtok(line, s);
-				rootRev = strtok(NULL, s);
+				rootStars = strtok(NULL, s);
 
-				return atoi(nodeRev) - atoi(rootRev);
+				return atoi(nodeStars) - atoi(rootStars);
 			}
 			return addressCmp;
 		}
@@ -195,23 +197,23 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 {
 	const char s[2] = "\t";
 
-	FILE * busFp = fopen(businesses_path, "r");
-	FILE * revFp = fopen(reviews_path, "r");
+	FILE * busFp = fopen(businesses_path, "rb");
+	FILE * revFp = fopen(reviews_path, "rb");
 
-	char busLine[200];
+	char busLine[259];
 	char * busId;
 	char * name;
-	char revLine[200];
+	char revLine[6000];
 	char * revId;
 	
 	long int busPos = 0;
 	long int revPos = 0;
 
-	fgets(busLine, 200, busFp);
+	fgets(busLine, 259, busFp);
 	busId = strtok(busLine, s);
 	name = strtok(NULL, s);
 
-	fgets(revLine, 200, revFp);
+	fgets(revLine, 6000, revFp);
 	revId = strtok(revLine, s);
 
 	long int busNextPos = ftell(busFp);
@@ -219,7 +221,9 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 
 	YelpDataTree * root = CreateYelpDataTree(name, busPos, revPos, businesses_path, reviews_path);
 
-	fgets(revLine, 200, revFp);
+	fseek(busFp, busNextPos, SEEK_SET);
+	fseek(revFp, revNextPos, SEEK_SET);
+	fgets(revLine, 6000, revFp);
 	revId = strtok(revLine, s);
 	revPos = revNextPos;
 	revNextPos = ftell(revFp);
@@ -231,13 +235,15 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos, NULL, NULL);
 			YelpDataInsert(node, root, busFp, revFp);
 
-			fgets(revLine, 200, revFp);
+			fseek(revFp, revNextPos, SEEK_SET);
+			fgets(revLine, 6000, revFp);
 			revId = strtok(revLine, s);
 			revPos = revNextPos;
 			revNextPos = ftell(revFp);
 		}
 
-		fgets(busLine, 200, busFp);
+		fseek(busFp, busNextPos, SEEK_SET);
+		fgets(busLine, 259, busFp);
 		busId = strtok(busLine, s);
 		name = strtok(NULL, s);
 		busPos = busNextPos;

@@ -6,5 +6,7 @@
 
 int main(int argc, char * * argv)
 {
+	struct YelpDataBST * tree = create_business_bst("businesses.tsv", "reviews.tsv");
 
+	struct Business * business = get_business_reviews(tree, "mcdonolds", "WA", NULL);
 }
