@@ -230,7 +230,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 
 	while (!feof(busFp))
 	{
-		while (!strcmp(busId, revId)) // As long as the bus id and review id are the same
+		while (!stricmp(busId, revId)) // As long as the bus id and review id are the same
 		{
 			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos, NULL, NULL);
 			YelpDataInsert(node, root, busFp, revFp);
@@ -285,18 +285,18 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 
 	TraverseInOrder(b, root->right, state, city, address, zipcode, zip_code, State, busFp, revFp);
 
-	if (!stricmp(zipcode, zip_code) || zip_code == NULL)
+	if (zip_code == NULL || !stricmp(zipcode, zip_code))
 	{
-		if (!stricmp(state, State) || State == NULL)
+		if (State == NULL || !stricmp(state, State))
 		{
 			// Matches criteria
-			if (!stricmp(zipcode, prevZip) || prevZip == NULL)
+			if (prevZip == NULL || !stricmp(zipcode, prevZip))
 			{
-				if (!stricmp(state, prevState) || prevState == NULL)
+				if (prevState == NULL || !stricmp(state, prevState))
 				{
-					if (!stricmp(city, prevCity) || prevCity == NULL)
+					if (prevCity == NULL || !stricmp(city, prevCity))
 					{
-						if (!stricmp(address, prevAddress) || prevAddress == NULL)
+						if (prevAddress == NULL || !stricmp(address, prevAddress))
 						{
 							// Same as last node ---> Can combine them!
 							b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
@@ -390,8 +390,8 @@ static BusinessPointerTree * NodeStateSearch(char * State, BusinessPointerTree *
 	char * state;
 
 	fseek(busFp, root->businessPointer, SEEK_SET);
-	char line[500];
-	fgets(line, 500, busFp);
+	char line[259];
+	fgets(line, 259, busFp);
 
 	strtok(line, s);
 	strtok(NULL, s);
@@ -424,8 +424,8 @@ static void NullStateSearch(struct Business * b, YelpDataTree * root, char * nam
 struct Business* get_business_reviews(struct YelpDataBST* bst,
 	char* name, char* state, char* zip_code)
 {
-	FILE * busFp = fopen(bst->businessPath, "r");
-	FILE * revFp = fopen(bst->reviewPath, "r");
+	FILE * busFp = fopen(bst->businessPath, "rb");
+	FILE * revFp = fopen(bst->reviewPath, "rb");
 
 	struct Business * business = malloc(sizeof(struct Business));
 	business->name = strdup(name);
