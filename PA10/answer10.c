@@ -432,14 +432,16 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 	business->num_locations = 0;
 
 	YelpDataTree * tree = NodeSearch(name, bst);
-
-	if (state == NULL)
+	if (tree != NULL)
 	{
-		NullStateSearch(business, tree, name, zip_code, busFp, revFp);
-	}
-	else
-	{
-		StateSearch(business, tree, name, zip_code, state, busFp, revFp);
+		if (state == NULL)
+		{
+			NullStateSearch(business, tree, name, zip_code, busFp, revFp);
+		}
+		else
+		{
+			StateSearch(business, tree, name, zip_code, state, busFp, revFp);
+		}
 	}
 
 	fclose(busFp);
