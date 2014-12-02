@@ -376,7 +376,7 @@ static void StateSearch(struct Business * b, YelpDataTree * root, char * name, c
 
 static void NullStateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(b, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
+	TraverseInOrder(b, root->locations, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
 }
 
 struct Business* get_business_reviews(struct YelpDataBST* bst,
