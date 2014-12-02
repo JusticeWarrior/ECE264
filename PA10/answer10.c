@@ -289,40 +289,43 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 		if (State == NULL || !stricmp(state, State))
 		{
 			// Matches criteria
-			if (b->locations[b->num_locations - 1].zip_code != NULL || !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
+			if (b->num_locations)
 			{
-				if (b->locations[b->num_locations - 1].state != NULL || !stricmp(state, b->locations[b->num_locations - 1].state))
+				if (b->locations[b->num_locations - 1].zip_code != NULL || !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
 				{
-					if (b->locations[b->num_locations - 1].city != NULL || !stricmp(city, b->locations[b->num_locations - 1].city))
+					if (b->locations[b->num_locations - 1].state != NULL || !stricmp(state, b->locations[b->num_locations - 1].state))
 					{
-						if (b->locations[b->num_locations - 1].address != NULL || !stricmp(address, b->locations[b->num_locations - 1].address))
+						if (b->locations[b->num_locations - 1].city != NULL || !stricmp(city, b->locations[b->num_locations - 1].city))
 						{
-							// Same as last node ---> Can combine them!
-							b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
+							if (b->locations[b->num_locations - 1].address != NULL || !stricmp(address, b->locations[b->num_locations - 1].address))
+							{
+								// Same as last node ---> Can combine them!
+								b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * b->locations[b->num_locations - 1].num_reviews + 1);
 
-							char * stars;
-							char * review;
-							fseek(revFp, root->reviewPointer, SEEK_SET);
-							char line[6000];
-							fgets(line, 6000, revFp);
+								char * stars;
+								char * review;
+								fseek(revFp, root->reviewPointer, SEEK_SET);
+								char line[6000];
+								fgets(line, 6000, revFp);
 
-							strtok(line, s);
+								strtok(line, s);
 
-							stars = strtok(NULL, s);
-							strtok(NULL, s);
-							strtok(NULL, s);
-							strtok(NULL, s);
-							review = strtok(NULL, s);
+								stars = strtok(NULL, s);
+								strtok(NULL, s);
+								strtok(NULL, s);
+								strtok(NULL, s);
+								review = strtok(NULL, s);
 
-							b->locations[b->num_locations - 1].reviews[0].stars = atoi(stars);
-							b->locations[b->num_locations - 1].reviews[0].text = strdup(review);
+								b->locations[b->num_locations - 1].num_reviews++;
+								b->locations[b->num_locations - 1].reviews[b->locations[b->num_locations - 1].num_reviews - 1].stars = atoi(stars);
+								b->locations[b->num_locations - 1].reviews[b->locations[b->num_locations - 1].num_reviews - 1].text = strdup(review);
+								return;
+							}
 						}
 					}
 				}
 			}
-			else
-			{
-				if (b->num_locations == 0)
+				if (!b->num_locations)
 				{
 					b->locations = malloc(sizeof(struct Location));
 				}
@@ -330,11 +333,12 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 				{
 					b->locations = realloc(b->locations, sizeof(struct Location) * b->num_locations + 1);
 				}
+				b->num_locations++;
 				b->locations[b->num_locations - 1].address = strdup(address);
 				b->locations[b->num_locations - 1].city = strdup(city);
 				b->locations[b->num_locations - 1].state = strdup(state);
 				b->locations[b->num_locations - 1].zip_code = strdup(zipcode);
-				b->locations[b->num_locations - 1].num_reviews++;
+				b->locations[b->num_locations - 1].num_reviews = 1;
 
 				b->locations[b->num_locations - 1].reviews = malloc(sizeof(struct Review));
 
@@ -354,8 +358,7 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 
 				b->locations[b->num_locations - 1].reviews[0].stars = atoi(stars);
 				b->locations[b->num_locations - 1].reviews[0].text = strdup(review);
-				b->num_locations++;
-			}
+				
 		}
 	}
 
