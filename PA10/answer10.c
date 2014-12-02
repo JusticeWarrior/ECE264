@@ -255,6 +255,9 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, char * prevState,
 	char * prevCity, char * prevAddress, char * prevZip, char * zip_code, char * State, FILE * busFp, FILE * revFp)
 {
+	if (root == NULL)
+		return; // BASE CASE
+
 	const char s[2] = "\t";
 
 	char * address;
@@ -404,12 +407,12 @@ static BusinessPointerTree * NodeStateSearch(char * State, BusinessPointerTree *
 
 static void StateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, char * state, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(b, NodeStateSearch(state, NodeSearch(name, root)->locations, busFp), NULL, NULL, NULL, NULL, zipcode, state, busFp, revFp);
+	TraverseInOrder(b, NodeStateSearch(state, root->locations, busFp), NULL, NULL, NULL, NULL, zipcode, state, busFp, revFp);
 }
 
 static void NullStateSearch(struct Business * b, YelpDataTree * root, char * name, char * zipcode, FILE * busFp, FILE * revFp)
 {
-	TraverseInOrder(b, NodeSearch(name, root)->locations, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
+	TraverseInOrder(b, root->locations, NULL, NULL, NULL, NULL, zipcode, NULL, busFp, revFp);
 }
 
 struct Business* get_business_reviews(struct YelpDataBST* bst,
@@ -424,7 +427,14 @@ struct Business* get_business_reviews(struct YelpDataBST* bst,
 
 	YelpDataTree * tree = NodeSearch(name, bst);
 
-
+	if (state == NULL)
+	{
+		NullStateSearch(business, tree, name, zip_code, busFp, revFp);
+	}
+	else
+	{
+		StateSearch(business, tree, name, zip_code, state, busFp, revFp);
+	}
 
 	fclose(busFp);
 	fclose(revFp);
