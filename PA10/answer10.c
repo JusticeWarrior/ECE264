@@ -487,6 +487,7 @@ void destroy_business_result(struct Business* b)
 		}
 		free(b->locations[i].reviews);
 	}
-	free(b->locations);
+	if (b->num_locations)
+		free(b->locations);
 	free(b);
 }

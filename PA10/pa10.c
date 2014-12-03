@@ -8,7 +8,8 @@ int main(int argc, char * * argv)
 {
 	struct YelpDataBST * tree = create_business_bst("/home/shay/a/ece264p0/share/yelp_data/businesses.tsv", "/home/shay/a/ece264p0/share/yelp_data/reviews.tsv");
 
-	struct Business * business = get_business_reviews(tree, "Boston Cleaners", "NV", NULL);
+
+	struct Business * business = get_business_reviews(tree, "Meatballz", "NV", NULL);
 
 	business->locations->reviews[0];
 	business->locations->reviews[1];
