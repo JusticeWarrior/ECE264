@@ -107,7 +107,7 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 				int starsCmp = atoi(nodeStars) - atoi(rootStars);
 				if (!starsCmp)
 				{
-					return strcmp(rootText, nodeText);
+					return stricmp(rootText, nodeText);
 				}
 				return starsCmp;
 			}
@@ -219,7 +219,6 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	char * name;
 	char revLine[6000];
 	char * revId;
-	char * text;
 	
 	long int busPos = 0;
 	long int revPos = 0;
@@ -253,11 +252,6 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 			fseek(revFp, revNextPos, SEEK_SET);
 			fgets(revLine, 6000, revFp);
 			revId = strtok(revLine, s);
-			strtok(NULL, s);
-			strtok(NULL, s);
-			strtok(NULL, s);
-			strtok(NULL, s);
-			text = strtok(NULL, s);
 			revPos = revNextPos;
 			revNextPos = ftell(revFp);
 		}
@@ -311,13 +305,13 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 			// Matches criteria
 			if (b->num_locations)
 			{
-				if (b->locations[b->num_locations - 1].zip_code != NULL || !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
+				if (b->locations[b->num_locations - 1].zip_code != NULL && !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
 				{
-					if (b->locations[b->num_locations - 1].state != NULL || !stricmp(state, b->locations[b->num_locations - 1].state))
+					if (b->locations[b->num_locations - 1].state != NULL && !stricmp(state, b->locations[b->num_locations - 1].state))
 					{
-						if (b->locations[b->num_locations - 1].city != NULL || !stricmp(city, b->locations[b->num_locations - 1].city))
+						if (b->locations[b->num_locations - 1].city != NULL && !stricmp(city, b->locations[b->num_locations - 1].city))
 						{
-							if (b->locations[b->num_locations - 1].address != NULL || !stricmp(address, b->locations[b->num_locations - 1].address))
+							if (b->locations[b->num_locations - 1].address != NULL && !stricmp(address, b->locations[b->num_locations - 1].address))
 							{
 								// Same as last node ---> Can combine them!
 								b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * (b->locations[b->num_locations - 1].num_reviews + 1));

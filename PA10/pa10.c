@@ -10,6 +10,22 @@ int main(int argc, char * * argv)
 
 	struct Business * business = get_business_reviews(tree, "Boston Cleaners", "NV", NULL);
 
+	business->locations->reviews[0];
+	business->locations->reviews[1];
+	business->locations->reviews[2];
+	business->locations->reviews[3];
+	business->locations->reviews[4];
+	business->locations->reviews[5];
+	business->locations->reviews[6];
+	business->locations->reviews[7];
+	business->locations->reviews[8];
+	business->locations->reviews[9];
+	business->locations->reviews[10];
+	business->locations->reviews[11];
+	business->locations->reviews[12];
+	business->locations->reviews[13];
+	business->locations->reviews[14];
+
 	destroy_business_bst(tree);
 
 	destroy_business_result(business);
