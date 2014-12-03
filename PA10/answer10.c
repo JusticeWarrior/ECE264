@@ -73,13 +73,13 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 	rootCity = strtok(NULL, s);
 	rootState = strtok(NULL, s);
 
-	int stateCmp = stricmp(rootState, nodeState);
+	int stateCmp = strcasecmp(rootState, nodeState);
 	if (!stateCmp)
 	{
-		int cityCmp = stricmp(rootCity, nodeCity);
+		int cityCmp = strcasecmp(rootCity, nodeCity);
 		if (!cityCmp)
 		{
-			int addressCmp = stricmp(rootAddress, nodeAddress);
+			int addressCmp = strcasecmp(rootAddress, nodeAddress);
 			if (!addressCmp)
 			{
 				fseek(revFp, nodeRev, SEEK_SET);
@@ -107,7 +107,7 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 				int starsCmp = atoi(nodeStars) - atoi(rootStars);
 				if (!starsCmp)
 				{
-					return stricmp(rootText, nodeText);
+					return strcasecmp(rootText, nodeText);
 				}
 				return starsCmp;
 			}
@@ -191,7 +191,7 @@ static YelpDataTree * YelpDataInsert(YelpDataTree * node, YelpDataTree * root, F
 		return node;
 
 	// Sort names according to non case sensitive data
-	int comp = stricmp(node->name, root->name);
+	int comp = strcasecmp(node->name, root->name);
 	if (comp < 0)
 		root->left = YelpDataInsert(node, root->left, busFp, revFp);
 	else if (comp > 0)
@@ -244,7 +244,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 
 	while (!feof(busFp))
 	{
-		while (!stricmp(busId, revId)) // As long as the bus id and review id are the same
+		while (!strcasecmp(busId, revId)) // As long as the bus id and review id are the same
 		{
 			YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos, NULL, NULL);
 			YelpDataInsert(node, root, busFp, revFp);
@@ -298,20 +298,20 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 
 	TraverseInOrder(b, root->right, zip_code, State, busFp, revFp);
 
-	if (zip_code == NULL || !stricmp(zipcode, zip_code))
+	if (zip_code == NULL || !strcasecmp(zipcode, zip_code))
 	{
-		if (State == NULL || !stricmp(state, State))
+		if (State == NULL || !strcasecmp(state, State))
 		{
 			// Matches criteria
 			if (b->num_locations)
 			{
-				if (b->locations[b->num_locations - 1].zip_code != NULL && !stricmp(zipcode, b->locations[b->num_locations - 1].zip_code))
+				if (b->locations[b->num_locations - 1].zip_code != NULL && !strcasecmp(zipcode, b->locations[b->num_locations - 1].zip_code))
 				{
-					if (b->locations[b->num_locations - 1].state != NULL && !stricmp(state, b->locations[b->num_locations - 1].state))
+					if (b->locations[b->num_locations - 1].state != NULL && !strcasecmp(state, b->locations[b->num_locations - 1].state))
 					{
-						if (b->locations[b->num_locations - 1].city != NULL && !stricmp(city, b->locations[b->num_locations - 1].city))
+						if (b->locations[b->num_locations - 1].city != NULL && !strcasecmp(city, b->locations[b->num_locations - 1].city))
 						{
-							if (b->locations[b->num_locations - 1].address != NULL && !stricmp(address, b->locations[b->num_locations - 1].address))
+							if (b->locations[b->num_locations - 1].address != NULL && !strcasecmp(address, b->locations[b->num_locations - 1].address))
 							{
 								// Same as last node ---> Can combine them!
 								b->locations[b->num_locations - 1].reviews = realloc(b->locations[b->num_locations - 1].reviews, sizeof(struct Review) * (b->locations[b->num_locations - 1].num_reviews + 1));
@@ -319,7 +319,6 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 								char * stars;
 								char * review;
 								fseek(revFp, root->reviewPointer, SEEK_SET);
-								char line[6000];
 								fgets(line, 6000, revFp);
 
 								strtok(line, s);
@@ -386,7 +385,7 @@ static YelpDataTree * NodeSearch(char * name, YelpDataTree * root)
 	if (root == NULL)
 		return NULL; // BASE CASE
 
-	int comp = stricmp(name, root->name);
+	int comp = strcasecmp(name, root->name);
 	if (comp == 0)
 		return root; // WE FOUND THE NAME!
 	else if (comp < 0)
@@ -419,7 +418,7 @@ static BusinessPointerTree * NodeStateSearch(char * State, BusinessPointerTree *
 	city = strtok(NULL, s);
 	state = strtok(NULL, s);
 
-	int comp = stricmp(State, state);
+	int comp = strcasecmp(State, state);
 	if (comp == 0)
 		return root; // WE FOUND THE STATE!
 	else if (comp < 0)
