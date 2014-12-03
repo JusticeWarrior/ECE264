@@ -22,9 +22,12 @@ int main(int argc, char * * argv)
 	business->locations->reviews[9];
 	business->locations->reviews[10];
 	business->locations->reviews[11];
-	business->locations->reviews[12];
-	business->locations->reviews[13];
-	business->locations->reviews[14];
+
+	business->locations[1];
+	business->locations[1].reviews[0];
+	business->locations[1].reviews[1];
+	business->locations[1].reviews[2];
+	business->locations[1].reviews[3];
 
 	destroy_business_bst(tree);
 
