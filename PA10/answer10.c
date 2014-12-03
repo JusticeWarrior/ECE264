@@ -47,10 +47,10 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 	char * nodeState;
 
 	fseek(busFp, nodeData, SEEK_SET);
-	char line[6000];
-	fgets(line, 259, busFp);
+	char nodeLine[6000];
+	fgets(nodeLine, 259, busFp);
 
-	strtok(line, s);
+	strtok(nodeLine, s);
 	strtok(NULL, s);
 
 	nodeAddress = strtok(NULL, s);
@@ -61,31 +61,32 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 	char * rootCity;
 	char * rootState;
 
+	char rootLine[6000];
 	fseek(busFp, rootData, SEEK_SET);
 
-	fgets(line, 259, busFp);
+	fgets(rootLine, 259, busFp);
 
-	strtok(line, s);
+	strtok(rootLine, s);
 	strtok(NULL, s);
 
 	rootAddress = strtok(NULL, s);
 	rootCity = strtok(NULL, s);
 	rootState = strtok(NULL, s);
 
-	int stateCmp = stricmp(nodeState, rootState);
+	int stateCmp = stricmp(rootState, nodeState);
 	if (!stateCmp)
 	{
-		int cityCmp = stricmp(nodeCity, rootCity);
+		int cityCmp = stricmp(rootCity, nodeCity);
 		if (!cityCmp)
 		{
-			int addressCmp = stricmp(nodeAddress, rootAddress);
+			int addressCmp = stricmp(rootAddress, nodeAddress);
 			if (!addressCmp)
 			{
 				fseek(revFp, nodeRev, SEEK_SET);
-				fgets(line, 6000, revFp);
+				fgets(nodeLine, 6000, revFp);
 				char * nodeStars;
 				char * nodeText;
-				strtok(line, s);
+				strtok(nodeLine, s);
 				nodeStars = strtok(NULL, s);
 				strtok(NULL, s);
 				strtok(NULL, s);
@@ -93,10 +94,10 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 				nodeText = strtok(NULL, s);
 
 				fseek(revFp, rootRev, SEEK_SET);
-				fgets(line, 6000, revFp);
+				fgets(rootLine, 6000, revFp);
 				char * rootStars;
 				char * rootText;
-				strtok(line, s);
+				strtok(rootLine, s);
 				rootStars = strtok(NULL, s);
 				strtok(NULL, s);
 				strtok(NULL, s);
@@ -106,8 +107,9 @@ static int businessComp(long int nodeData, long int rootData, long int nodeRev, 
 				int starsCmp = atoi(nodeStars) - atoi(rootStars);
 				if (!starsCmp)
 				{
-					return strcmp(nodeText, rootText);
+					return strcmp(rootText, nodeText);
 				}
+				return starsCmp;
 			}
 			return addressCmp;
 		}
@@ -125,10 +127,8 @@ static BusinessPointerTree * BusinessTreeInsert(BusinessPointerTree * node, Busi
 	int comp = compFunc(node->businessPointer, root->businessPointer, node->reviewPointer, root->reviewPointer, busFp, revFp);
 	if (comp < 0)
 		root->left = BusinessTreeInsert(node, root->left, compFunc, busFp, revFp);
-	else if (comp > 0)
+	else if (comp >= 0)
 		root->right = BusinessTreeInsert(node, root->right, compFunc, busFp, revFp);
-	else
-		return root; // Throw out duplicates (although there shouldn't be any)
 
 	return root;
 }
@@ -219,6 +219,7 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 	char * name;
 	char revLine[6000];
 	char * revId;
+	char * text;
 	
 	long int busPos = 0;
 	long int revPos = 0;
@@ -252,6 +253,11 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 			fseek(revFp, revNextPos, SEEK_SET);
 			fgets(revLine, 6000, revFp);
 			revId = strtok(revLine, s);
+			strtok(NULL, s);
+			strtok(NULL, s);
+			strtok(NULL, s);
+			strtok(NULL, s);
+			text = strtok(NULL, s);
 			revPos = revNextPos;
 			revNextPos = ftell(revFp);
 		}
@@ -333,6 +339,8 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 								b->locations[b->num_locations - 1].num_reviews++;
 								b->locations[b->num_locations - 1].reviews[b->locations[b->num_locations - 1].num_reviews - 1].stars = atoi(stars);
 								b->locations[b->num_locations - 1].reviews[b->locations[b->num_locations - 1].num_reviews - 1].text = strdup(review);
+
+								TraverseInOrder(b, root->left, zip_code, State, busFp, revFp);
 								return;
 							}
 						}
