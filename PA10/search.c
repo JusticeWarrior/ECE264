@@ -103,26 +103,32 @@ int main(int argc, char *argv[]) {
 	char * test2[4] = { "", "Boston Cleaners", "", "" };
 	Search(4, test2, "test2", bst);
 
-	char * test3[4] = { "", "bOsToN cLeAnErS", "", "89135" };
+	char * test3[4] = { "", "Boston Cleaners", "", "89135" };
 	Search(4, test3, "test3", bst);
 
-	char * test4[4] = { "", "Ruby's Diner", "", "85226" };
+	char * test4[4] = { "", "bOsToN cLeAnErS", "nV", "89135" };
 	Search(4, test4, "test4", bst);
 
-	char * test5[4] = { "", "Captriottis", "", "" };
+	char * test5[4] = { "", "Ruby's Diner", "", "" };
 	Search(4, test5, "test5", bst);
 
-	char * test6[4] = { "", "Subway", "", "00000" };
+	char * test6[4] = { "", "Capriotti's", "", "" };
 	Search(4, test6, "test6", bst);
 
-	char * test7[4] = { "", "aaaaaaaaaaa", "", "" };
+	char * test7[4] = { "", "Subway", "AA", "" };
 	Search(4, test7, "test7", bst);
 
-	char * test8[4] = { "", "Simplicity Laser Hair Removal", "", "" };
+	char * test8[4] = { "", "Subway", "", "00000" };
 	Search(4, test8, "test8", bst);
 
-	char * test9[13] = { "", "McDonalds", "", "", "Burger King", "", "", "Wendys", "", "", "Starbucks", "", "" };
-	Search(13, test9, "test9", bst);
+	char * test9[4] = { "", "aaaaaaaaaaa", "", "" };
+	Search(4, test9, "test9", bst);
+
+	char * test10[4] = { "", "Simplicity Laser Hair Removal", "", "" };
+	Search(4, test10, "test10", bst);
+
+	char * test11[13] = { "", "McDonald's", "", "", "Burger King", "", "", "Wendy's", "", "", "Starbucks", "", "" };
+	Search(13, test11, "test11", bst);
 	
 	// Destroy (free) the BST and 
 	destroy_business_bst(bst);
