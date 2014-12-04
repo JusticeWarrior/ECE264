@@ -153,8 +153,12 @@ static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, 
 	tree->left = NULL;
 	tree->right = NULL;
 
-	tree->businessPath = strdup(businessPath);
-	tree->reviewPath = strdup(reviewPath);
+	if (businessPath != NULL)
+	{
+		tree->businessPath = strdup(businessPath);
+		tree->reviewPath = strdup(reviewPath);
+	}
+	
 	tree->locations = CreateBusinessTree(businessPointer, reviewPointer);
 	tree->name = strdup(name);
 
