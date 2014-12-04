@@ -23,7 +23,7 @@
     <ClCompile Include="..\..\answer10.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\pa10.c">
+    <ClCompile Include="..\..\search.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

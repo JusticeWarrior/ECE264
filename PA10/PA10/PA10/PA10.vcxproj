@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\answer10.c" />
-    <ClCompile Include="..\..\pa10.c" />
+    <ClCompile Include="..\..\search.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
