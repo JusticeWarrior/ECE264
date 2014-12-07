@@ -3,6 +3,9 @@
 #include <string.h>
 #include "answer11.h"
 
+StackNode * StackNode_Create(HuffNode * tree);
+void StackNode_Deconstruct(StackNode * node);
+
 HuffNode * HuffNode_create(int value)
 {
 	HuffNode* node = malloc(sizeof(HuffNode));
@@ -43,7 +46,7 @@ void Stack_destroy(Stack * stack)
 	{
 		StackNode * next = stack->head->next;
 		HuffNode_destroy(stack->head->tree);
-		free(stack->head);
+		StackNode_Deconstruct(stack->head);
 		stack->head = next;
 	}
 	free(stack);
@@ -59,7 +62,7 @@ int Stack_isEmpty(Stack * stack)
 	return 0;
 }
 
-static StackNode * Create_StackNode(HuffNode * tree)
+StackNode * StackNode_Create(HuffNode * tree)
 {
 	StackNode * node = malloc(sizeof(StackNode));
 	node->tree = tree;
@@ -67,7 +70,7 @@ static StackNode * Create_StackNode(HuffNode * tree)
 	return node;
 }
 
-static void Deconstruct_StackNode(StackNode * node)
+void StackNode_Deconstruct(StackNode * node)
 {
 	free(node);
 }
@@ -80,7 +83,7 @@ HuffNode * Stack_popFront(Stack * stack)
 	HuffNode * tree = stack->head->tree;
 	StackNode * head = stack->head;
 	stack->head = stack->head->next;
-	Deconstruct_StackNode(head);
+	StackNode_Deconstruct(head);
 
 	// If tree is NULL at this point, then stack->head->tree was NULL
 	return tree;
@@ -88,7 +91,7 @@ HuffNode * Stack_popFront(Stack * stack)
 
 void Stack_pushFront(Stack * stack, HuffNode * tree)
 {
-	StackNode * node = Create_StackNode(tree);
+	StackNode * node = StackNode_Create(tree);
 	node->next = stack->head;
 	stack->head = node->next;
 }
