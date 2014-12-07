@@ -59,9 +59,25 @@ int Stack_isEmpty(Stack * stack)
 	return 0;
 }
 
+static void Deconstruct_Stack_Node(StackNode * node)
+{
+	free(node);
+}
+
 HuffNode * Stack_popFront(Stack * stack)
 {
-	return NULL;
+	if (stack == NULL)
+		return NULL; // This should never happen, but if it does, then we will know right away rather than later on.
+	if (stack->head == NULL)
+		return NULL; // If the stack element is null, then this operation will not work. Again, should never happen.
+
+	HuffNode * tree = stack->head->tree;
+	StackNode * head = stack->head;
+	stack->head = stack->head->next;
+	Deconstruct_Stack_Node(head);
+
+	// If tree is NULL at this point, then stack->head->tree was NULL
+	return tree;
 }
 
 void Stack_pushFront(Stack * stack, HuffNode * tree)
