@@ -18,7 +18,7 @@ int main(int argc, char * * argv)
 
 	HuffNode * tree2 = HuffNode_create(5);
 	tree2->right = HuffNode_create(6);
-	tree2->left->left = HuffNode_create(7);
+	tree2->right->left = HuffNode_create(7);
 
 	StackNode * node2 = StackNode_Create(tree2);
 

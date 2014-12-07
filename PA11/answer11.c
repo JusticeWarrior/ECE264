@@ -38,7 +38,7 @@ Stack * Stack_create()
 
 void Stack_destroy(Stack * stack)
 {
-	if (stack == NULL)
+	if (stack == NULL) // If stack contains nothing free it and be done.
 		return;
 
 	// Free all memory associated with the contained linked-list
@@ -65,6 +65,7 @@ int Stack_isEmpty(Stack * stack)
 StackNode * StackNode_Create(HuffNode * tree)
 {
 	StackNode * node = malloc(sizeof(StackNode));
+	node->next = NULL;
 	node->tree = tree;
 
 	return node;
@@ -93,7 +94,7 @@ void Stack_pushFront(Stack * stack, HuffNode * tree)
 {
 	StackNode * node = StackNode_Create(tree);
 	node->next = stack->head;
-	stack->head = node->next;
+	stack->head = node;
 }
 
 void Stack_popPopCombinePush(Stack * stack)
