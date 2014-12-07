@@ -103,8 +103,8 @@ void Stack_popPopCombinePush(Stack * stack)
 	HuffNode * node2 = Stack_popFront(stack);
 
 	HuffNode * root = HuffNode_create(node1->value + node2->value);
-	root->left = node1;
-	root->right = node2;
+	root->left = node2;
+	root->right = node1;
 
 	Stack_pushFront(stack, root);
 }
