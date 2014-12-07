@@ -88,6 +88,9 @@ HuffNode * Stack_popFront(Stack * stack)
 
 void Stack_pushFront(Stack * stack, HuffNode * tree)
 {
+	StackNode * node = Create_StackNode(tree);
+	node->next = stack->head;
+	stack->head = node->next;
 }
 
 void Stack_popPopCombinePush(Stack * stack)
