@@ -111,7 +111,30 @@ void Stack_popPopCombinePush(Stack * stack)
 
 HuffNode * HuffTree_readTextHeader(FILE * fp)
 {
-	return NULL;
+	Stack * stack = Stack_create();
+	char position = fgetc(fp);
+	HuffNode * node = NULL;
+	while (!feof(fp))
+	{
+		if (position == '1')
+		{
+			position = fgetc(fp);
+			node = HuffNode_create(position);
+			Stack_pushFront(stack, node);
+		}
+		else
+		{
+			if (stack->head == NULL || stack->head->next == NULL)
+				break;
+			Stack_popPopCombinePush(stack);
+		}
+		position = fgetc(fp);
+	}
+	node = Stack_popFront(stack);
+
+	Stack_destroy(stack);
+
+	return node;
 }
 
 HuffNode * HuffTree_readBinaryHeader(FILE * fp)

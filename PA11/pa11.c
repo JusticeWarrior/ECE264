@@ -35,6 +35,8 @@ int main(int argc, char * * argv)
 	HuffNode * pop = Stack_popFront(stack);
 	Stack_pushFront(stack, pop);
 
+	Stack_popPopCombinePush(stack);
+
 	Stack_destroy(stack);
 
 	return EXIT_SUCCESS;
