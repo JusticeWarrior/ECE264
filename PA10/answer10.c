@@ -158,6 +158,11 @@ static YelpDataTree * CreateYelpDataTree(char * name, long int businessPointer, 
 		tree->businessPath = strdup(businessPath);
 		tree->reviewPath = strdup(reviewPath);
 	}
+	else
+	{
+		tree->businessPath = NULL;
+		tree->reviewPath = NULL;
+	}
 	
 	tree->locations = CreateBusinessTree(businessPointer, reviewPointer);
 	tree->name = strdup(name);
@@ -268,6 +273,18 @@ struct YelpDataBST* create_business_bst(const char* businesses_path,
 		busNextPos = ftell(busFp);
 	}
 
+	while (!feof(revFp) && !stricmp(busId, revId)) // As long as the bus id and review id are the same
+	{
+		YelpDataTree * node = CreateYelpDataTree(name, busPos, revPos, NULL, NULL);
+		YelpDataInsert(node, root, busFp, revFp);
+
+		fseek(revFp, revNextPos, SEEK_SET);
+		fgets(revLine, 6000, revFp);
+		revId = strtok(revLine, s);
+		revPos = revNextPos;
+		revNextPos = ftell(revFp);
+	}
+
 	fclose(busFp);
 	fclose(revFp);
 
@@ -331,7 +348,7 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 								strtok(NULL, s);
 								strtok(NULL, s);
 								strtok(NULL, s);
-								review = strtok(NULL, s);
+								review = strtok(NULL, "\n");
 
 								b->locations[b->num_locations - 1].num_reviews++;
 								b->locations[b->num_locations - 1].reviews[b->locations[b->num_locations - 1].num_reviews - 1].stars = atoi(stars);
@@ -373,7 +390,7 @@ static void TraverseInOrder(struct Business * b, BusinessPointerTree * root, cha
 				strtok(NULL, s);
 				strtok(NULL, s);
 				strtok(NULL, s);
-				review = strtok(NULL, s);
+				review = strtok(NULL, "\n");
 
 				b->locations[b->num_locations - 1].reviews[0].stars = atoi(stars);
 				b->locations[b->num_locations - 1].reviews[0].text = strdup(review);

@@ -10,26 +10,20 @@ const char reviews_path[] = "reviews.tsv";
 //const char businesses_path[] = "/home/shay/a/ece264p0/share/yelp_data/businesses.short.tsv";
 //const char reviews_path[] = "/home/shay/a/ece264p0/share/yelp_data/reviews.short.tsv";
 
-int main(int argc, char *argv[]) {
+int Search(int argc, char *argv[], const char * filename, struct YelpDataBST * bst) {
+	freopen(filename, "wb", stdout);
 
-	// Check number of arguments.  Name of executable is always first argument.  name1 is required.
-	if((argc + 2) / 3 == 0) {
-		fprintf(stderr, "Usage:\n%s <name1> [state1] [zip1] [name2] [state2] [zip2] ...\n\n", argv[0]);
-		return EXIT_FAILURE;
-	}
-
-	// Create instance of YelpDataBST
-	struct YelpDataBST* bst = create_business_bst(businesses_path, reviews_path);
+	
 
 	// We will collect stats for easy summarization
-	int num_locations=0, num_address_chars=0, num_reviews=0, num_review_chars=0, total_stars=0;
+	int num_locations = 0, num_address_chars = 0, num_reviews = 0, num_review_chars = 0, total_stars = 0;
 
 	int arg_idx;
-	for(arg_idx = 1; arg_idx < argc; arg_idx += 3) {
+	for (arg_idx = 1; arg_idx < argc; arg_idx += 3) {
 
 		// Extract the query
-		char* name     = argv[arg_idx];
-		char* state    = arg_idx + 1 < argc ? argv[arg_idx + 1] : "";
+		char* name = argv[arg_idx];
+		char* state = arg_idx + 1 < argc ? argv[arg_idx + 1] : "";
 		char* zip_code = arg_idx + 2 < argc ? argv[arg_idx + 2] : "";
 
 		// Print the query
@@ -39,30 +33,30 @@ int main(int argc, char *argv[]) {
 
 		// If state or zip_code are "", change them to NULL.   (The specification of get_business_reviews(..)
 		// says to pass NULL to include all states and zip codes.)
-		char* state_or_null    = state[0]    == '\0' ? NULL : state;    // change to NULL if ""
+		char* state_or_null = state[0] == '\0' ? NULL : state;    // change to NULL if ""
 		char* zip_code_or_null = zip_code[0] == '\0' ? NULL : zip_code; // change to NULL if ""
 		struct Business *b = get_business_reviews(bst, name, state_or_null, zip_code_or_null);
 
 		// Print results
-		if(b == NULL) {
+		if (b == NULL) {
 			printf("RESULTS:  (none)\n\n");
 		}
 		else {
 			printf("RESULTS:  \"%s\"  (%d locations)\n\n", b->name, b->num_locations);
 
 			int location_idx;
-			for(location_idx=0; location_idx<b->num_locations; location_idx++) {
+			for (location_idx = 0; location_idx<b->num_locations; location_idx++) {
 
 				// Print LOCATION
 				struct Location loc = b->locations[location_idx];
 				printf("LOCATION #%d:  address=\"%s\"  city=\"%s\"  state=\"%s\"  zip_code=\"%s\"  (%d reviews)\n\n",
-					   location_idx + 1, loc.address, loc.city, loc.state, loc.zip_code, loc.num_reviews);
+					location_idx + 1, loc.address, loc.city, loc.state, loc.zip_code, loc.num_reviews);
 				num_address_chars += strlen(loc.address) + strlen(loc.state) + strlen(loc.zip_code);
 				num_locations++;
 
 				// Print REVIEW
 				int review_idx;
-				for(review_idx=0; review_idx<loc.num_reviews; review_idx++) {
+				for (review_idx = 0; review_idx<loc.num_reviews; review_idx++) {
 					struct Review rvw = loc.reviews[review_idx];
 					printf("REVIEW #%d:  %d stars  (%d chars)\n", review_idx + 1, rvw.stars, (int)strlen(rvw.text));
 					printf("%s\n\n", rvw.text);
@@ -72,7 +66,7 @@ int main(int argc, char *argv[]) {
 				}
 
 				// Print a divider (unless this is the last time)
-				if(location_idx + 1 < b->num_locations) {
+				if (location_idx + 1 < b->num_locations) {
 					printf("................................................................................\n");
 				}
 			}
@@ -90,6 +84,52 @@ int main(int argc, char *argv[]) {
 		num_locations, num_address_chars, num_reviews, num_review_chars, avg_stars);
 	printf("================================================================================\n");
 
+	freopen("CON", "wb", stdout);
+
+	return EXIT_SUCCESS;
+}
+
+int main(int argc, char *argv[]) {
+
+	// Create instance of YelpDataBST
+	struct YelpDataBST* bst = create_business_bst(businesses_path, reviews_path);
+
+	char * test0[4] = { "", "Boston Cleaners", "NV", "89135" };
+	Search(4, test0, "test0", bst);
+
+	char * test1[4] = { "", "Boston Cleaners", "NV", "" };
+	Search(4, test1, "test1", bst);
+
+	char * test2[4] = { "", "Boston Cleaners", "", "" };
+	Search(4, test2, "test2", bst);
+
+	char * test3[4] = { "", "Boston Cleaners", "", "89135" };
+	Search(4, test3, "test3", bst);
+
+	char * test4[4] = { "", "bOsToN cLeAnErS", "nV", "89135" };
+	Search(4, test4, "test4", bst);
+
+	char * test5[4] = { "", "Ruby's Diner", "", "" };
+	Search(4, test5, "test5", bst);
+
+	char * test6[4] = { "", "Capriotti's", "", "" };
+	Search(4, test6, "test6", bst);
+
+	char * test7[4] = { "", "Subway", "AA", "" };
+	Search(4, test7, "test7", bst);
+
+	char * test8[4] = { "", "Subway", "", "00000" };
+	Search(4, test8, "test8", bst);
+
+	char * test9[4] = { "", "aaaaaaaaaaa", "", "" };
+	Search(4, test9, "test9", bst);
+
+	char * test10[4] = { "", "Simplicity Laser Hair Removal", "", "" };
+	Search(4, test10, "test10", bst);
+
+	char * test11[13] = { "", "McDonald's", "", "", "Burger King", "", "", "Wendy's", "", "", "Starbucks", "", "" };
+	Search(13, test11, "test11", bst);
+	
 	// Destroy (free) the BST and 
 	destroy_business_bst(bst);
 
