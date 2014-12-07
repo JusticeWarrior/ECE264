@@ -99,6 +99,14 @@ void Stack_pushFront(Stack * stack, HuffNode * tree)
 
 void Stack_popPopCombinePush(Stack * stack)
 {
+	HuffNode * node1 = Stack_popFront(stack);
+	HuffNode * node2 = Stack_popFront(stack);
+
+	HuffNode * root = HuffNode_create(node1->value + node2->value);
+	root->left = node1;
+	root->right = node2;
+
+	Stack_pushFront(stack, root);
 }
 
 HuffNode * HuffTree_readTextHeader(FILE * fp)
