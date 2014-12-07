@@ -27,15 +27,35 @@ void HuffNode_destroy(HuffNode * tree)
 
 Stack * Stack_create()
 {
-	return NULL;
+	Stack * stack = malloc(sizeof(Stack));
+	stack->head = NULL;
+
+	return stack;
 }
 
 void Stack_destroy(Stack * stack)
 {
+	if (stack == NULL)
+		return;
+
+	// Free all memory associated with the contained linked-list
+	while (stack->head != NULL)
+	{
+		StackNode * next = stack->head->next;
+		HuffNode_destroy(stack->head->tree);
+		free(stack->head);
+		stack->head = next;
+	}
+	free(stack);
 }
 
 int Stack_isEmpty(Stack * stack)
 {
+	// just in case stack is considered empty if it is NULL
+	if (stack == NULL)
+		return 1;
+	if (stack->head == NULL)
+		return 1;
 	return 0;
 }
 
