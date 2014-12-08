@@ -115,7 +115,7 @@ HuffNode * HuffTree_readTextHeader(FILE * fp)
 	Stack * stack = Stack_create();
 	char position = fgetc(fp);
 	HuffNode * node = NULL;
-	while (!feof(fp))
+	while (1)
 	{
 		if (position == '1')
 		{
@@ -145,32 +145,32 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 
 	uint8_t positionBits[2];
 	fread(&positionBits[0], sizeof(uint8_t), 2, fp);
-	while (!feof(fp))
+	while (1)
 	{
 		int i;
 		for (i = 7; i >= 0; --i)
 		{
-
+			if (((positionBits[0] >> i) & 0x01) == 0x01)
+			{
+				position = fgetc(fp);
+				node = HuffNode_create(position);
+				Stack_pushFront(stack, node);
+			}
+			else
+			{
+				if (stack->head == NULL || stack->head->next == NULL)
+				{
+					node = Stack_popFront(stack);
+					Stack_destroy(stack);
+					return node;
+				}
+				Stack_popPopCombinePush(stack);
+			}
 		}
 		positionBits[0] = positionBits[1];
 		fread(&positionBits[1], sizeof(uint8_t), 1, fp);
 	}
-	/*while (!feof(fp))
-	{
-		if (position == '1')
-		{
-			position = fgetc(fp);
-			node = HuffNode_create(position);
-			Stack_pushFront(stack, node);
-		}
-		else
-		{
-			if (stack->head == NULL || stack->head->next == NULL)
-				break;
-			Stack_popPopCombinePush(stack);
-		}
-		position = fgetc(fp);
-	}*/
+
 	node = Stack_popFront(stack);
 
 	Stack_destroy(stack);
