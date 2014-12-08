@@ -152,7 +152,7 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 		for (i = 7; i >= 0; --i)
 		{
 			if (((positionBits[0] >> i) & 0x01) == 0x01)
-			{
+			{ // We the bit was a 1
 				i--; // Move to the position of the first bit of the character
 				int bit;
 				for (bit = 7; bit >= 0; bit--)
@@ -188,11 +188,12 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 					}
 					i--;
 				}
+				i++; // Subtract 1 extra on the end, so this will rearrange it correctly
 				node = HuffNode_create(character);
 				Stack_pushFront(stack, node);
 			}
 			else
-			{
+			{ // The bit was a 0
 				if (stack->head == NULL || stack->head->next == NULL)
 				{
 					node = Stack_popFront(stack);
