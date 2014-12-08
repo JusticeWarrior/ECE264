@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "answer11.h"
+#include "stdint.h"
 
 StackNode * StackNode_Create(HuffNode * tree);
 void StackNode_Deconstruct(StackNode * node);
@@ -139,5 +140,40 @@ HuffNode * HuffTree_readTextHeader(FILE * fp)
 
 HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 {
-	return NULL;
+	Stack * stack = Stack_create();
+	HuffNode * node = NULL;
+
+	uint8_t positionBits[2];
+	fread(&positionBits[0], sizeof(uint8_t), 2, fp);
+	while (!feof(fp))
+	{
+		int i;
+		for (i = 7; i >= 0; --i)
+		{
+
+		}
+		positionBits[0] = positionBits[1];
+		fread(&positionBits[1], sizeof(uint8_t), 1, fp);
+	}
+	/*while (!feof(fp))
+	{
+		if (position == '1')
+		{
+			position = fgetc(fp);
+			node = HuffNode_create(position);
+			Stack_pushFront(stack, node);
+		}
+		else
+		{
+			if (stack->head == NULL || stack->head->next == NULL)
+				break;
+			Stack_popPopCombinePush(stack);
+		}
+		position = fgetc(fp);
+	}*/
+	node = Stack_popFront(stack);
+
+	Stack_destroy(stack);
+
+	return node;
 }
