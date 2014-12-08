@@ -179,11 +179,11 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 						//Assign value of character bit
 						if (((positionBits[0] >> i) & 0x01) == 0x01)
 						{
-							(character | (0x01 << bit));
+							character = character | (0x01 << bit);
 						}
 						else
 						{
-							(character & ~(0x01 << bit));
+							character = character & ~(0x01 << bit);
 						}
 					}
 					i--;
