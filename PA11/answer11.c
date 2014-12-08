@@ -144,6 +144,7 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 	HuffNode * node = NULL;
 
 	uint8_t positionBits[2];
+	uint8_t character = 0x00;
 	fread(&positionBits[0], sizeof(uint8_t), 2, fp);
 	while (1)
 	{
@@ -152,8 +153,42 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 		{
 			if (((positionBits[0] >> i) & 0x01) == 0x01)
 			{
-				position = fgetc(fp);
-				node = HuffNode_create(position);
+				i--; // Move to the position of the first bit of the character
+				int bit;
+				for (bit = 7; bit >= 0; bit--)
+				{
+					if (i >= 0)
+					{
+						//Assign value of character bit
+						if (((positionBits[0] >> i) & 0x01) == 0x01)
+						{
+							(character | (0x01 << bit));
+						}
+						else
+						{
+							(character & ~(0x01 << bit));
+						}
+						
+					}
+					else
+					{
+						positionBits[0] = positionBits[1];
+						fread(&positionBits[1], sizeof(uint8_t), 1, fp);
+						i = 7;
+
+						//Assign value of character bit
+						if (((positionBits[0] >> i) & 0x01) == 0x01)
+						{
+							(character | (0x01 << bit));
+						}
+						else
+						{
+							(character & ~(0x01 << bit));
+						}
+					}
+					i--;
+				}
+				node = HuffNode_create(character);
 				Stack_pushFront(stack, node);
 			}
 			else
