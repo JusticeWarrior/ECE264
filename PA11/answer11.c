@@ -211,5 +211,7 @@ HuffNode * HuffTree_readBinaryHeader(FILE * fp)
 
 	Stack_destroy(stack);
 
+	fseek(fp, -1, SEEK_CUR); // Move the file pointer back 1 byte.
+
 	return node;
 }
