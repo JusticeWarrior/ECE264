@@ -7,15 +7,21 @@ uint128 alphaTou128(const char * str)
 {
 	int strLen = strlen(str);
 	uint128 number = 0;
-	int charNum;
+	uint128 charNum;
 
+	int j;
 	int i;
 	for (i = 0; i < strLen; i++)
 	{
 		charNum = str[i] - '0';
 		if (charNum < 0 || charNum > 9)
 			return 0;
-		number += charNum * (strLen - i);
+
+		for (j = 0; j < strLen - i - 1; j++)
+		{
+			charNum *= 10;
+		}
+		number += charNum;
 	}	
 
 	return number;
@@ -23,6 +29,10 @@ uint128 alphaTou128(const char * str)
 
 char * u128ToString(uint128 value)
 {
+	char str[39];
+
+	
+
 	return NULL;
 }
 
