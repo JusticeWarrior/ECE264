@@ -44,9 +44,17 @@ char * u128ToString(uint128 value)
 {
 	int len = u128Length(value);
 
+	char * str = malloc(sizeof(char) * len + 1);
+	str[len] = '\n';
+	
+	int i;
+	for (i = len - 1; i >= 0; i--)
+	{
+		str[i] = (value % 10) + '0';
+		value /= 10;
+	}
 
-
-	return NULL;
+	return str;
 }
 
 
