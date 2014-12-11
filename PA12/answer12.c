@@ -27,11 +27,24 @@ uint128 alphaTou128(const char * str)
 	return number;
 }
 
+static int u128Length(uint128 value)
+{
+	int len = 0;
+
+	while(value > 0)
+	{
+		value /= 10;
+		len++;
+	}
+
+	return len;
+}
+
 char * u128ToString(uint128 value)
 {
-	char str[39];
+	int len = u128Length(value);
 
-	
+
 
 	return NULL;
 }
