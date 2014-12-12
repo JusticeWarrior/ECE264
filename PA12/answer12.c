@@ -88,10 +88,10 @@ static void * testPrimalityThread(void * primalityArg)
 {
 	PrimalityArgs * arguments = (PrimalityArgs *)primalityArg;
 
-	int i;
+	uint128 i;
 	for (i = arguments->startValue; i <= arguments->endValue; i += 2)
 	{
-		if (*(arguments->value) % ((2 * i) + 1) == 0)
+		if (!(*(arguments->value) % i))
 		{
 			*(arguments->isPrime) = FALSE;
 			return NULL;
@@ -102,12 +102,14 @@ static void * testPrimalityThread(void * primalityArg)
 
 int primalityTestParallel(uint128 value, int n_threads)
 {
-	uint128 threadSize = (uint128)floor(sqrt(value)) / n_threads;
+	uint128 threadSize = (uint128)floor(sqrt(value) / n_threads) + 1;
 	int isPrime = TRUE;
 
 	if (value == 2)
 		return TRUE;
-	
+	if (!(value % 2))
+		return FALSE;
+
 	pthread_t threads[n_threads];	
 	PrimalityArgs args[n_threads];
 
@@ -117,12 +119,22 @@ int primalityTestParallel(uint128 value, int n_threads)
 	int i;
 	for (i = 1; i < n_threads; i++)
 	{
-		PrimalityArgsFill(&args[i], &value, threadSize * i, threadSize * (i + 1), &isPrime);
+		uint128 startVal = threadSize * i;
+		if (startVal % 2 == 0)
+			startVal--;
+		if (startVal < 4)
+		{
+			args[i].startValue = -1;
+			continue;
+		}
+		PrimalityArgsFill(&args[i], &value, startVal, startVal + threadSize, &isPrime);
 		pthread_create(&threads[i], NULL, testPrimalityThread, &args[i]);
 	}
 
 	for (i = 0; i < n_threads; i++)
 	{
+		if (args[i].startValue == -1)
+			continue;
 		pthread_join(threads[i], NULL);
 	}
 
