@@ -9,27 +9,43 @@ uint128 alphaTou128(const char * str)
 {
 	int strLen = strlen(str);
 	uint128 number = 0;
-	uint128 charNum;
+	uint128 charNum = 0;
 
 	int j;
-	int i;
-	for (i = 0; i < strLen; i++)
+	int i = 0;
+	int k = 0;
+	if (i < strLen && str[i] == ' ')
 	{
-		charNum = str[i] - '0';
+		i = 1;
+	}
+	if (strLen > 39)
+		strLen = 39;
+	for (; k < strLen; k++)
+	{
+		charNum = (uint128)(str[i] - '0');
 		if (charNum < 0 || charNum > 9)
 		{
-			for (j = 0; j < strLen - i; j++)
+			for (j = 0; j < strLen - k; j++)
 			{
 				number /= 10;
 			}
 			return number;
 		}
 
-		for (j = 0; j < strLen - i - 1; j++)
+		if (charNum == 0)
 		{
-			charNum *= 10;
+			i++;
+			continue;
 		}
-		number += charNum;
+		else
+		{
+			for (j = 0; j < strLen - k - 1; j++)
+			{
+				charNum *= 10;
+			}
+			number += charNum;
+		}
+		i++;
 	}	
 
 	return number;
@@ -61,7 +77,7 @@ char * u128ToString(uint128 value)
 	int i;
 	for (i = len - 1; i >= 0; --i)
 	{
-		str[i] = (value % 10) + '0';
+		str[i] = (char)((int)(value % 10) + '0');
 		value /= 10;
 	}
 
@@ -102,12 +118,17 @@ static void * testPrimalityThread(void * primalityArg)
 
 int primalityTestParallel(uint128 value, int n_threads)
 {
-	uint128 threadSize = (uint128)floor(sqrt(value) / n_threads) + 1;
+	uint128 max = (uint128)floor(sqrt(value));
+	if (max * max == value)
+		return FALSE; 
+	uint128 threadSize = (max / n_threads) + 1;
 	int isPrime = TRUE;
 
-	if (value == 2)
+	if (value == 2 || value == 3)
 		return TRUE;
 	if (!(value % 2))
+		return FALSE;
+	if (!(value % 3))
 		return FALSE;
 
 	pthread_t threads[n_threads];	
@@ -122,7 +143,7 @@ int primalityTestParallel(uint128 value, int n_threads)
 		uint128 startVal = threadSize * i;
 		if (startVal % 2 == 0)
 			startVal--;
-		if (startVal < 4)
+		if (startVal < 4 || startVal >= max)
 		{
 			args[i].startValue = -1;
 			continue;
